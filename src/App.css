@@ -5,7 +5,7 @@ body {
 }
 
 h1 {
-  font-size: 40px;
+  font-size: 10vw;
   font-weight: 900;
   text-transform: uppercase;
   color: #4E3A76;
@@ -31,11 +31,11 @@ h1 {
   color: #8C69D2;
   margin: 0 20px;
   font-weight: 800;
-  font-size: 25px;
+  font-size: 6vw;
 }
 
 .days p {
-  font-size: 30px;
+  font-size: 8vw;
   font-weight: 800;
   color: #4E3A76;
   margin: 10px 7.5vw;
