@@ -1,38 +1,90 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+body {
+  background-color: #8C69D2;
+  font-family: "Poppins", sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+  font-size: 40px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #4E3A76;
+  margin: 20px 7.5vw 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#btn-wrapper {
+  width: 80vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 10px auto;
+}
+
+.btn {
+  background-color: #4E3A76;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 40px;
+  width: 100%;
+}
+.btn p {
+  color: #8C69D2;
+  margin: 0 20px;
+  font-weight: 800;
+  font-size: 25px;
+}
+
+.days p {
+  font-size: 30px;
+  font-weight: 800;
+  color: #4E3A76;
+  margin: 10px 7.5vw;
+}
+
+.subj-wrapper {
+  width: 85vw;
+  margin: 3vw auto;
+  border-radius: 12px;
+  background-color: #D1DF71;
+  display: grid;
+  grid-template-areas: "subj subj extra" "type time time";
+}
+.subj-wrapper p {
+  color: black;
+  opacity: 70%;
+  margin: 0;
+  padding: 0;
+  font-size: 4vw;
+  display: inline-block;
+  font-weight: 700;
+  padding: 4vw 4vw;
+}
+.subj-wrapper .subject {
+  font-size: 6vw;
+  grid-area: subj;
+}
+.subj-wrapper .subj-extra {
+  grid-area: extra;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: flex-end;
+  white-space: nowrap;
+  padding: 4vw 0 0;
+}
+.subj-wrapper .subj-extra p {
+  font-weight: 600;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow-x: visible;
+}
+.subj-wrapper .subj-type {
+  grid-area: type;
+}
+.subj-wrapper .time {
+  grid-area: time;
+  font-size: 5vw;
+  text-align: end;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+/*# sourceMappingURL=app.css.map */
