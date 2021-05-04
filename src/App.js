@@ -1,15 +1,19 @@
 import './App.css';
 import Button from './components/Button'
 import Subject from './components/Subject'
+import Modal from './components/Modal'
 
 function App() {
   return (
     <div className="App">
+      <div id='modal-wrapper'>
+        <Modal modalType='Add subject' />
+      </div>
       <h1>Schedule Generator</h1>
       <div id='btn-wrapper'>
-        <Button text='Add class' id='add-btn' />
-        <Button text='Edit class' id='edit-btn' />
-        <Button text='Delete class' id='del-btn' />
+        <Button text='Add class' id='add-btn' type='btn' />
+        <Button text='Edit class' id='edit-btn' type='btn' />
+        <Button text='Delete class' id='del-btn' type='btn' />
       </div>
       <div id='days-wrapper'>
         <div id='mon' className='days'>

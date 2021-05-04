@@ -35,8 +35,8 @@ h1 {
 }
 
 .days p {
-  font-size: 6vw;
   font-weight: 800;
+  font-size: 6vw;
   color: #4E3A76;
   margin: 10px 7.5vw;
 }
@@ -50,13 +50,13 @@ h1 {
   grid-template-areas: "subj subj extra" "type time time";
 }
 .subj-wrapper p {
-  color: black;
-  opacity: 0.7;
   margin: 0;
   padding: 0;
+  color: black;
+  opacity: 0.7;
   font-size: 3vw;
-  display: inline-block;
   font-weight: 700;
+  display: inline-block;
   padding: 4vw 4vw;
 }
 .subj-wrapper .subject {
@@ -85,6 +85,106 @@ h1 {
   grid-area: time;
   font-size: 3.75vw;
   text-align: end;
+}
+
+#modal-wrapper {
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: 2;
+  width: 100vw;
+  background-color: rgba(59, 212, 146, 0.75);
+}
+
+.modal {
+  width: 85vw;
+  display: flex;
+  flex-direction: column;
+  margin: 10vw auto;
+  background-color: #3bd492;
+  padding: 3.5vw;
+  border-radius: 3vw;
+  border: 0.25vw solid rgba(0, 0, 0, 0.8);
+  box-shadow: -3px 2px 15px rgba(0, 0, 0, 0.5);
+}
+.modal p {
+  color: black;
+  opacity: 0.7;
+  font-size: 6vw;
+  font-weight: 800;
+  margin: 0;
+}
+.modal label {
+  font-size: 4.5vw;
+  font-weight: 700;
+  display: grid;
+  grid-template-areas: "label input input";
+  align-items: center;
+  grid-area: label;
+  margin: 2vw 0;
+  color: black;
+  opacity: 0.7;
+}
+.modal input {
+  align-self: flex-end;
+  justify-self: flex-end;
+  font-weight: 600;
+  font-family: inherit;
+  background-color: inherit;
+  grid-area: input;
+  border: 0.3vw solid black;
+  border-radius: 2vw;
+  font-size: 3.5vw;
+  padding: 2vw;
+}
+.modal select {
+  border: 0.3vw solid black;
+  grid-area: input;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 3.5vw;
+  padding: 2vw;
+  border-radius: 2vw;
+  background-color: transparent;
+}
+.modal .btn-modal-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+}
+.modal .btn-modal-wrapper .cancel {
+  background-color: red;
+  border-radius: 3.5vw;
+  padding: 0;
+  margin: 0;
+  width: 95%;
+  justify-self: center;
+  box-shadow: -3px 2px 15px rgba(0, 0, 0, 0.5);
+  border: 0.25vw solid rgba(0, 0, 0, 0.8);
+}
+.modal .btn-modal-wrapper .cancel p {
+  font-size: 4.5vw;
+  color: black;
+  opacity: 0.7;
+  padding: 1vw 5vw;
+}
+.modal .btn-modal-wrapper .ok {
+  background-color: #3bd492;
+  border-radius: 3.5vw;
+  padding: 0;
+  margin: 0;
+  width: 95%;
+  justify-self: center;
+  box-shadow: -3px 2px 15px rgba(0, 0, 0, 0.5);
+  border: 0.25vw solid rgba(0, 0, 0, 0.8);
+}
+.modal .btn-modal-wrapper .ok p {
+  font-size: 4.5vw;
+  color: black;
+  opacity: 0.7;
+  padding: 1vw 5vw;
 }
 
 /*# sourceMappingURL=app.css.map */
