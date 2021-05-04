@@ -143,7 +143,7 @@ h1 {
     flex-direction: column;
     margin: 10vw auto;
     background-color: rgb(59, 212, 146);
-    padding: 3.5vw;
+    // padding: 3.5vw;
     border-radius: 3vw;
     border: 0.25vw solid rgba(0,0,0,0.8);
     box-shadow: -3px 2px 15px  rgba(0,0,0,.5);
@@ -152,16 +152,19 @@ h1 {
         font-size: 6vw;
         font-weight: 800;
         margin: 0;
+        padding: 3.5vw;
     }
     label {
         font-size: 4.5vw;
         font-weight: 700;
         display: grid;
-        grid-template-areas: 'label input input';
+        grid-template-columns: 1fr 1.5fr;
+        grid-template-rows: 1fr;
         align-items: center;
-        grid-area: label;
+        // grid-area: label;
         margin: 2vw 0;
         @include textOpac();
+        padding: 0 3.5vw;
     }
     input {
         align-self: flex-end;
@@ -169,26 +172,31 @@ h1 {
         font-weight: 600;
         font-family: inherit;
         background-color: inherit;
-        grid-area: input;
+        // grid-area: input;
         border: 0.3vw solid rgba(0,0,0,1);
         border-radius: 2vw;
         font-size: 3.5vw;
         padding: 2vw;
+        // width: 100%;
+        width: 70%;
     }
     select {
         border: 0.3vw solid rgba(0,0,0,1);
-        grid-area: input;
+        // grid-area: input;
         font-weight: 600;
         font-family: inherit;
         font-size: 3.5vw;
         padding: 2vw;
         border-radius: 2vw;
         background-color: transparent;
+        width: 70%;
+        justify-self: flex-end;
     }
     .btn-modal-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr;
+        padding: 3.5vw;
         .cancel {
             background-color: $red;
             @include modalBtn();
