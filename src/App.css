@@ -5,7 +5,7 @@ body {
 }
 
 h1 {
-  font-size: 10vw;
+  font-size: 7.5vw;
   font-weight: 900;
   text-transform: uppercase;
   color: #4E3A76;
@@ -31,11 +31,11 @@ h1 {
   color: #8C69D2;
   margin: 0 20px;
   font-weight: 800;
-  font-size: 6vw;
+  font-size: 4.5vw;
 }
 
 .days p {
-  font-size: 8vw;
+  font-size: 6vw;
   font-weight: 800;
   color: #4E3A76;
   margin: 10px 7.5vw;
@@ -51,16 +51,16 @@ h1 {
 }
 .subj-wrapper p {
   color: black;
-  opacity: 70%;
+  opacity: 0.7;
   margin: 0;
   padding: 0;
-  font-size: 4vw;
+  font-size: 3vw;
   display: inline-block;
   font-weight: 700;
   padding: 4vw 4vw;
 }
 .subj-wrapper .subject {
-  font-size: 6vw;
+  font-size: 4.5vw;
   grid-area: subj;
 }
 .subj-wrapper .subj-extra {
@@ -83,7 +83,7 @@ h1 {
 }
 .subj-wrapper .time {
   grid-area: time;
-  font-size: 5vw;
+  font-size: 3.75vw;
   text-align: end;
 }
 
