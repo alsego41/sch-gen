@@ -137,7 +137,6 @@ h1 {
   padding: 0 3.5vw;
 }
 .modal input {
-  align-self: flex-end;
   justify-self: flex-end;
   font-weight: 600;
   font-family: inherit;

@@ -161,28 +161,23 @@ h1 {
         grid-template-columns: 1fr 1.5fr;
         grid-template-rows: 1fr;
         align-items: center;
-        // grid-area: label;
         margin: 2vw 0;
         @include textOpac();
         padding: 0 3.5vw;
     }
     input {
-        align-self: flex-end;
         justify-self: flex-end;
         font-weight: 600;
         font-family: inherit;
         background-color: inherit;
-        // grid-area: input;
         border: 0.3vw solid rgba(0,0,0,1);
         border-radius: 2vw;
         font-size: 3.5vw;
         padding: 2vw;
-        // width: 100%;
         width: 70%;
     }
     select {
         border: 0.3vw solid rgba(0,0,0,1);
-        // grid-area: input;
         font-weight: 600;
         font-family: inherit;
         font-size: 3.5vw;
