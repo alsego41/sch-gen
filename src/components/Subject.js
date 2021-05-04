@@ -1,6 +1,10 @@
 const Subject = props => {
+    setTimeout(() => {
+        let subj = document.querySelector(`#${props.id}`)
+        subj.style.backgroundColor = props.color
+    }, 0);
     return (
-        <div className='subj-wrapper'>
+        <div className='subj-wrapper' id={props.id}>
             <p className='subject'>{props.subject}</p>
             <p className='subj-type'>{props.subjType}</p>
             <div className='subj-extra'>

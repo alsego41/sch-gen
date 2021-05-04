@@ -15,6 +15,8 @@ function App() {
         <div id='mon' className='days'>
           <p>Monday</p>
           <Subject 
+            id='md'
+            color='#D1DF71'
             subject='Matematica Discreta'
             subjType='Práctica'
             professor='Sabatinelli'
@@ -24,6 +26,8 @@ function App() {
             timeEnd='10:00'
           />
           <Subject 
+            id='alg'
+            color='#2DC3DB'
             subject='Álgebra'
             subjType='Práctica'
             professor='Sabatinelli'
@@ -45,6 +49,8 @@ function App() {
         <div id='fri' className='days'>
           <p>Friday</p>
           <Subject 
+            id='amii'
+            color='#DF717C'
             subject='Análisis Matemático'
             subjType='Práctica'
             professor='Sabatinelli'
