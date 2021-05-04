@@ -95,7 +95,15 @@ h1 {
   position: absolute;
   z-index: 2;
   width: 100vw;
+}
+#modal-wrapper.add {
   background-color: rgba(59, 212, 146, 0.75);
+}
+#modal-wrapper.edit {
+  background-color: rgba(45, 195, 219, 0.75);
+}
+#modal-wrapper.del {
+  background-color: rgba(245, 66, 53, 0.75);
 }
 
 .modal {
@@ -155,7 +163,7 @@ h1 {
   grid-template-rows: 1fr;
 }
 .modal .btn-modal-wrapper .cancel {
-  background-color: red;
+  background-color: #f54235;
   border-radius: 3.5vw;
   padding: 0;
   margin: 0;
@@ -185,6 +193,19 @@ h1 {
   color: black;
   opacity: 0.7;
   padding: 1vw 5vw;
+}
+.modal.add {
+  background-color: #3bd492;
+}
+.modal.edit {
+  background-color: #2dc3db;
+}
+.modal.del {
+  background-color: #f54235;
+}
+
+.invisible {
+  display: none;
 }
 
 /*# sourceMappingURL=app.css.map */

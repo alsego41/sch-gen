@@ -2,7 +2,7 @@ import Button from './Button'
 
 const Modal  = (props) => {
     return (
-        <div id={props.id} className='modal'>
+        <div id={props.id} className={'modal ' + props.modalClass}>
             <p>{props.modalType}</p>
             <div className='modal-form' id={props.idForm}>
                 <label>Subject <input type='text' placeholder='Discrete Mathematics' /></label>

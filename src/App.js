@@ -6,8 +6,8 @@ import Modal from './components/Modal'
 function App() {
   return (
     <div className="App">
-      <div id='modal-wrapper'>
-        <Modal modalType='Add subject' />
+      <div id='modal-wrapper' className='add'>
+        <Modal modalType='Add subject' modalClass='add' />
       </div>
       <h1>Schedule Generator</h1>
       <div id='btn-wrapper'>
