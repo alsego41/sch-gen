@@ -8,7 +8,8 @@ Generate your schedules through this website, load any school subject or somethi
 - Developed with React (CRA).
 - SASS
 
-### Future Improvements | 'Milestones'
+## Future Improvements | 'Milestones'
+- Site fully responsive.
 - Functional buttons.
   - Add button.
   - Edit button.
