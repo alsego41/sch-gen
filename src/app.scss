@@ -19,6 +19,7 @@ $blue: rgb(45, 195, 219);
         padding: 1vw 5vw;
     }
 }
+
 @mixin boldMS {
     font-weight: 800;
     font-size: 4.5vw;
@@ -57,13 +58,13 @@ h1 {
 }
 .btn {
     background-color: $dark-color;
-    padding: 10px;
-    margin: 5px;
+    margin: 0.95vw;
+    padding: 2vw;
     border-radius: 40px;
     width: 100%;
     p {
         color: $clear-color;
-        margin: 0 20px;
+        margin: 0 3vw;
         @include boldMS()
     }
 }
@@ -86,14 +87,14 @@ h1 {
     p {
         @include mopo();
         @include textOpac();
-        font-size: 3vw;
-        font-weight: 700;
+        // font-weight: 700;
         display: inline-block;
         padding: 4vw 4vw;
     }
     .subject {
         font-size: 4.5vw;
         grid-area: subj;
+        font-weight: 700;
     }
     .subj-extra {
         grid-area: extra;
@@ -105,6 +106,7 @@ h1 {
         padding: 4vw 0 0;
         
         p {
+            font-size: 3vw;
             font-weight: 600;
             padding-top: 0;
             padding-bottom: 0;
@@ -112,14 +114,18 @@ h1 {
         }
     }
     .subj-type{
+        font-weight: 700;
+        font-size: 3vw;
         grid-area: type;
     }
     .time {
+        font-weight: 700;
         grid-area: time;
         font-size: 3.75vw;
         text-align: end;
     }
 }
+
 #modal-wrapper {
     @include mopo();
     top: 0;
@@ -127,6 +133,7 @@ h1 {
     position: absolute;
     z-index: 2;
     width: 100vw;
+    min-height: 100vh;
     &.add {
         background-color: rgba(59, 212, 146, .75);
     }
@@ -141,7 +148,7 @@ h1 {
     width: 85vw;
     display: flex;
     flex-direction: column;
-    margin: 10vw auto;
+    margin: 15vw auto;
     background-color: rgb(59, 212, 146);
     // padding: 3.5vw;
     border-radius: 3vw;
@@ -213,4 +220,75 @@ h1 {
 }
 .invisible {
     display: none;
+}
+
+@media screen and (min-width: 540px) {
+    .fs-s {
+        font-size: 1.5vw;
+    }
+    h1 {
+        // font-weight: 800;
+        font-size: 5.5vw;
+    }
+    #btn-wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 1fr;
+        gap: 1vw;
+        width: 85vw;
+    }
+    .btn {
+        margin: 0;
+        padding: 2vw 0;
+        border-radius: 3.5vw;
+        p {
+            font-size: 2.5vw;
+        }
+    }
+    .days p {
+        font-size: 3.5vw;
+    }
+    .subj-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(auto, 1fr);
+        width: 85vw;
+        margin: 0 auto;
+        gap: 1.5vw;
+        .subj-wrapper {
+            width: 100%;
+            margin: 0;
+            p {
+                padding: 2vw;
+            }
+            .subject {
+                font-size: 2.75vw;
+                display: flex;
+                flex-direction: column;
+                align-self: flex-start;
+                // font-weight: 600;
+            }
+            .subj-extra {
+                padding: 2vw 0 0;
+                p {
+                    font-size: 1.5vw;
+                    padding: 0.2vw 2vw;
+                }  
+            }
+            .subj-type {
+                font-size: 1.5vw;
+                display: flex;
+                flex-direction: column;
+                align-self: flex-end;
+                // padding-top: 0;
+            }
+            .time {
+                padding-top: 0;
+                font-size: 2.5vw;
+                display: flex;
+                flex-direction: column;
+                align-self: flex-end;
+            }
+        }
+    }
 }
