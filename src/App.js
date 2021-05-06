@@ -16,6 +16,9 @@ function App() {
         <Button text='Delete class' id='del-btn' type='btn' />
       </div>
       <div id='days-wrapper'>
+        <div className='days' id='sch-hours'>
+          <p>Hours</p>
+        </div>
         <div id='mon' className='days'>
           <p>Monday</p>
           <div className='subj-container'>
