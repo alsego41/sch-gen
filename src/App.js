@@ -11,9 +11,9 @@ function App() {
       </div>
       <h1>Schedule Generator</h1>
       <div id='btn-wrapper'>
-        <Button text='Add class' id='add-btn' type='btn' />
-        <Button text='Edit class' id='edit-btn' type='btn' />
-        <Button text='Delete class' id='del-btn' type='btn' />
+        <Button text='Add class' id='add-btn' type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' />
+        <Button text='Edit class' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
+        <Button text='Delete class' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
       </div>
       <div id='days-wrapper'>
         <div className='days' id='sch-hours'>

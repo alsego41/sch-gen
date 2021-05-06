@@ -62,10 +62,51 @@ h1 {
     padding: 2vw;
     border-radius: 40px;
     width: 100%;
+    display: flex;
     p {
         color: $clear-color;
         margin: 0 3vw;
         @include boldMS()
+    }
+
+    &#add-btn {
+        .btn-icon path {
+            stroke: $clear-color;
+            stroke-width: 10px;
+        }
+    }
+
+    .btn-icon {
+        align-self: center;
+        margin-right: 2.5vw;
+        margin-left: auto;
+        width: 4.5vw;
+        height: 4.5vw;
+        fill: $clear-color;
+    }
+
+    &:hover {
+        &.add {
+            background-color: $green;
+            cursor: pointer;
+            p, .btn-icon {
+                @include textOpac();
+            }
+        }
+        &.edit{
+            background-color: $blue;
+            cursor: pointer;
+            p, .btn-icon {
+                @include textOpac();
+            }
+        }
+        &.del{
+            background-color: $red;
+            cursor: pointer;
+            p, .btn-icon {
+                @include textOpac();
+            }
+        }
     }
 }
 .days {
@@ -227,6 +268,10 @@ h1 {
 }
 
 @media screen and (min-width: 540px) {
+    .btn .btn-icon {
+        height: 3vw;
+        width: 3vw;
+    }
     h1 {
         // font-weight: 800;
         font-size: 5.5vw;
@@ -294,6 +339,10 @@ h1 {
 }
 
 @media screen and (min-width: 1366px) {
+    .btn .btn-icon {
+        height: 1.75vw;
+        width: 1.75vw;
+    }
     #sch-hours {
         display: flex;
     }
