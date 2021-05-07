@@ -10,6 +10,7 @@ h1 {
   text-transform: uppercase;
   color: #4E3A76;
   margin: 20px 7.5vw 10px;
+  user-select: none;
 }
 
 #btn-wrapper {
@@ -33,6 +34,7 @@ h1 {
   margin: 0 3vw;
   font-weight: 800;
   font-size: 4.5vw;
+  user-select: none;
 }
 .btn#add-btn .btn-icon path {
   stroke: #8C69D2;
@@ -84,6 +86,7 @@ h1 {
   font-size: 6vw;
   color: #4E3A76;
   margin: 10px 7.5vw;
+  user-select: none;
 }
 
 .subj-wrapper {
@@ -101,6 +104,7 @@ h1 {
   opacity: 0.7;
   display: inline-block;
   padding: 4vw 4vw;
+  user-select: text;
 }
 .subj-wrapper .subject {
   font-size: 4.5vw;
@@ -256,7 +260,7 @@ h1 {
 }
 
 .invisible {
-  display: none;
+  display: none !important;
 }
 
 #sch-hours {
