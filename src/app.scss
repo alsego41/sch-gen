@@ -344,6 +344,28 @@ h1 {
             }
         }
     }
+    .modal {
+        width: 70vw;
+        p {
+            font-size: 4.5vw;
+            padding: 2vw 3.5vw;
+        }
+        label {
+            font-size: 3.5vw;
+        }
+        input, select {
+            font-size: 2.75vw;
+        }
+        .btn-modal-wrapper {
+            padding: 2vw;
+            .btn {
+                border: 0.3vw solid rgba(0,0,0,0.8);
+            }
+            .cancel p, .ok p {
+                font-size: 3.5vw;
+            }
+        }
+    }
 }
 
 @media screen and (min-width: 1366px) {
@@ -459,6 +481,39 @@ h1 {
                 align-self: flex-start;
                 grid-row: 4/5;
                 grid-column: 1/2;
+            }
+        }
+    }
+    #modal-wrapper {
+        display: flex;
+        align-content: center;
+    }
+    .modal {
+        width: 35vw;
+        border: 0.15vw solid rgba(0,0,0,1);
+        margin: auto;
+        p {
+            font-size: 2vw;
+            padding: 1.2vw 3.5vw;
+        }
+        label {
+            font-size: 1.5vw;
+            margin: 0.75vw 0;
+        }
+        input, select {
+            border-radius: 1.3vw;
+            border: 0.15vw solid rgba(0,0,0,1);
+            padding: 1vw;
+            font-size: 1vw;
+        }
+        .btn-modal-wrapper {
+            padding: 1.5vw;
+            .btn {
+                border: 0.15vw solid rgba(0,0,0,0.8);
+            }
+            .cancel p, .ok p {
+                font-size: 1.75vw;
+                padding: 0.3vw 3vw;
             }
         }
     }

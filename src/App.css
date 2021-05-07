@@ -335,6 +335,29 @@ h1 {
     flex-direction: column;
     align-self: flex-end;
   }
+
+  .modal {
+    width: 70vw;
+  }
+  .modal p {
+    font-size: 4.5vw;
+    padding: 2vw 3.5vw;
+  }
+  .modal label {
+    font-size: 3.5vw;
+  }
+  .modal input, .modal select {
+    font-size: 2.75vw;
+  }
+  .modal .btn-modal-wrapper {
+    padding: 2vw;
+  }
+  .modal .btn-modal-wrapper .btn {
+    border: 0.3vw solid rgba(0, 0, 0, 0.8);
+  }
+  .modal .btn-modal-wrapper .cancel p, .modal .btn-modal-wrapper .ok p {
+    font-size: 3.5vw;
+  }
 }
 @media screen and (min-width: 1366px) {
   .btn .btn-icon {
@@ -453,6 +476,41 @@ h1 {
     align-self: flex-start;
     grid-row: 4/5;
     grid-column: 1/2;
+  }
+
+  #modal-wrapper {
+    display: flex;
+    align-content: center;
+  }
+
+  .modal {
+    width: 35vw;
+    border: 0.15vw solid black;
+    margin: auto;
+  }
+  .modal p {
+    font-size: 2vw;
+    padding: 1.2vw 3.5vw;
+  }
+  .modal label {
+    font-size: 1.5vw;
+    margin: 0.75vw 0;
+  }
+  .modal input, .modal select {
+    border-radius: 1.3vw;
+    border: 0.15vw solid black;
+    padding: 1vw;
+    font-size: 1vw;
+  }
+  .modal .btn-modal-wrapper {
+    padding: 1.5vw;
+  }
+  .modal .btn-modal-wrapper .btn {
+    border: 0.15vw solid rgba(0, 0, 0, 0.8);
+  }
+  .modal .btn-modal-wrapper .cancel p, .modal .btn-modal-wrapper .ok p {
+    font-size: 1.75vw;
+    padding: 0.3vw 3vw;
   }
 }
 
