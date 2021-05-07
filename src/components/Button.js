@@ -3,7 +3,7 @@ const Button = (props) => {
         <div className={props.type} id={props.id}>
             <p>{props.text}</p>
             {props.id === 'add-btn' ? 
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className='btn-icon'>
+                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className='btn-icon' id='plus-svg'>
                     <path d="M61.7637 40L17.7637 40" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
                     <path d="M39.7637 62L39.7637 18" stroke="#C2CCDE" stroke-linecap="round" stroke-linejoin="round" />
                 </svg> : 

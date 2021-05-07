@@ -107,6 +107,14 @@ h1 {
                 @include textOpac();
             }
         }
+        svg {
+            fill: black;
+            opacity: 0.7;
+        }
+        #plus-svg path {
+            stroke: black;
+            opacity: 0.9;
+        }
     }
 }
 .days {
