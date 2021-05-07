@@ -27,25 +27,28 @@ function App() {
     // console.log(btnObject);
     // console.log(btnObject.id);
     if (btnObject.id === 'add-btn'){
+      document.querySelector('#datePicker').valueAsDate = new Date()
       setModalConfig({
         wrapperClasses: 'add',
-        title: 'Add subject',
+        title: 'Add task',
         modalClasses: 'add',
         text: 'Add'
       })
     }
     if (btnObject.id === 'edit-btn'){
+      document.querySelector('#datePicker').valueAsDate = new Date()
       setModalConfig({
         wrapperClasses: 'edit',
-        title: 'Edit subject',
+        title: 'Edit task',
         modalClasses: 'edit',
         text: 'Edit'
       })
     }
     if (btnObject.id === 'del-btn'){
+      document.querySelector('#datePicker').valueAsDate = new Date()
       setModalConfig({
         wrapperClasses: 'del',
-        title: 'Delete subject',
+        title: 'Delete task',
         modalClasses: 'del',
         text: 'Delete'
       })
@@ -57,6 +60,7 @@ function App() {
     // console.log();
   }
 
+  // console.log(new Date());
 
 
   return (
@@ -66,9 +70,9 @@ function App() {
       </div>
       <h1>Schedule Generator</h1>
       <div id='btn-wrapper'>
-        <Button handleClick={handleClick} text='Add class' id='add-btn' type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' />
-        <Button handleClick={handleClick} text='Edit class' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
-        <Button handleClick={handleClick} text='Delete class' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
+        <Button handleClick={handleClick} text='Add task' id='add-btn' type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' />
+        <Button handleClick={handleClick} text='Edit task' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
+        <Button handleClick={handleClick} text='Delete task' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
       </div>
       <div id='days-wrapper'>
         <div className='days' id='sch-hours'>
