@@ -2,18 +2,69 @@ import './App.css';
 import Button from './components/Button'
 import Subject from './components/Subject'
 import Modal from './components/Modal'
+import { useState } from 'react'
+
+const takeBtnParent = e => {
+  let object = e.target
+  while (!object.classList.contains('btn')){
+    object = object.parentNode
+  }
+  // console.log(object);
+  return object
+} 
 
 function App() {
+  const modalObject = {
+    wrapperClasses: 'invisible',
+    title: '',
+    modalClasses: ''
+  }
+  const [ modalConfig, setModalConfig ] = useState(modalObject)
+
+  const handleClick = e => {
+    let btnObject = takeBtnParent(e)
+    // console.log(btnObject);
+    // console.log(btnObject.id);
+    if (btnObject.id === 'add-btn'){
+      setModalConfig({
+        wrapperClasses: 'add',
+        title: 'Add subject',
+        modalClasses: 'add'
+      })
+    }
+    if (btnObject.id === 'edit-btn'){
+      setModalConfig({
+        wrapperClasses: 'edit',
+        title: 'Edit subject',
+        modalClasses: 'edit'
+      })
+    }
+    if (btnObject.id === 'del-btn'){
+      setModalConfig({
+        wrapperClasses: 'del',
+        title: 'Delete subject',
+        modalClasses: 'del'
+      })
+    }
+    if (btnObject.classList.contains('cancel')){
+      // console.log('cancel');
+      setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
+    }
+    // console.log();
+  }
+
+
+
   return (
     <div className="App">
-      <div id='modal-wrapper' className='add invisible'>
-        <Modal modalType='Add subject' modalClass='add' />
+      <div id='modal-wrapper' className={modalConfig.wrapperClasses}>
+        <Modal modalType={modalConfig.title} modalClass={modalConfig.modalClasses} handleClick={handleClick} />
       </div>
       <h1>Schedule Generator</h1>
       <div id='btn-wrapper'>
-        <Button text='Add class' id='add-btn' type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' />
-        <Button text='Edit class' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
-        <Button text='Delete class' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
+        <Button handleClick={handleClick} text='Add class' id='add-btn' type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' />
+        <Button handleClick={handleClick} text='Edit class' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
+        <Button handleClick={handleClick} text='Delete class' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
       </div>
       <div id='days-wrapper'>
         <div className='days' id='sch-hours'>

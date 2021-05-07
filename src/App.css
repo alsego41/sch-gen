@@ -48,6 +48,9 @@ h1 {
   height: 4.5vw;
   fill: #8C69D2;
 }
+.btn:hover {
+  cursor: pointer;
+}
 .btn:hover.add {
   background-color: #3bd492;
   cursor: pointer;
