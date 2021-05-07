@@ -24,7 +24,7 @@ const Modal  = (props) => {
                 </label>
                 <div className='btn-modal-wrapper'>
                     <Button type='btn cancel' text='Cancel' handleClick={props.handleClick} />
-                    <Button type='btn ok' text='Add' />
+                    <Button type='btn ok' text={props.text} />
                 </div>
             </div>
         </div>

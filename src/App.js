@@ -17,7 +17,8 @@ function App() {
   const modalObject = {
     wrapperClasses: 'invisible',
     title: '',
-    modalClasses: ''
+    modalClasses: '',
+    text: ''
   }
   const [ modalConfig, setModalConfig ] = useState(modalObject)
 
@@ -29,21 +30,24 @@ function App() {
       setModalConfig({
         wrapperClasses: 'add',
         title: 'Add subject',
-        modalClasses: 'add'
+        modalClasses: 'add',
+        text: 'Add'
       })
     }
     if (btnObject.id === 'edit-btn'){
       setModalConfig({
         wrapperClasses: 'edit',
         title: 'Edit subject',
-        modalClasses: 'edit'
+        modalClasses: 'edit',
+        text: 'Edit'
       })
     }
     if (btnObject.id === 'del-btn'){
       setModalConfig({
         wrapperClasses: 'del',
         title: 'Delete subject',
-        modalClasses: 'del'
+        modalClasses: 'del',
+        text: 'Delete'
       })
     }
     if (btnObject.classList.contains('cancel')){
@@ -58,7 +62,7 @@ function App() {
   return (
     <div className="App">
       <div id='modal-wrapper' className={modalConfig.wrapperClasses}>
-        <Modal modalType={modalConfig.title} modalClass={modalConfig.modalClasses} handleClick={handleClick} />
+        <Modal modalType={modalConfig.title} modalClass={modalConfig.modalClasses} handleClick={handleClick} text={modalConfig.text} />
       </div>
       <h1>Schedule Generator</h1>
       <div id='btn-wrapper'>
