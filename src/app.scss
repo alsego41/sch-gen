@@ -117,6 +117,7 @@ h1 {
             stroke: black;
             opacity: 0.9;
         }
+        cursor: pointer;
     }
 }
 .days {
@@ -166,7 +167,7 @@ h1 {
             overflow-x: visible;
         }
     }
-    .subj-type{
+    .subj-dsc{
         font-weight: 700;
         font-size: 3vw;
         grid-area: type;
@@ -332,7 +333,7 @@ h1 {
                     padding: 0.2vw 2vw;
                 }  
             }
-            .subj-type {
+            .subj-dsc {
                 font-size: 1.5vw;
                 display: flex;
                 flex-direction: column;
@@ -437,7 +438,7 @@ h1 {
             grid-template-columns: 1fr;
             grid-template-rows: repeat(auto, 1fr);
             .subject,
-            .subj-type,
+            .subj-dsc,
             .subj-extra,
             .time {
                 margin: 0.3vw 0;
@@ -467,7 +468,7 @@ h1 {
                     padding: 0 1vw;
                 }  
             }
-            .subj-type {
+            .subj-dsc {
                 font-size: 0.8vw;
                 display: flex;
                 flex-direction: row;
