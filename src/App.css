@@ -130,7 +130,7 @@ h1 {
   padding-bottom: 0;
   overflow-x: visible;
 }
-.subj-wrapper .subj-type {
+.subj-wrapper .subj-dsc {
   font-weight: 700;
   font-size: 3vw;
   grid-area: type;
@@ -329,7 +329,7 @@ h1 {
     font-size: 1.5vw;
     padding: 0.2vw 2vw;
   }
-  .subj-container .subj-wrapper .subj-type {
+  .subj-container .subj-wrapper .subj-dsc {
     font-size: 1.5vw;
     display: flex;
     flex-direction: column;
@@ -439,7 +439,7 @@ h1 {
     grid-template-rows: repeat(auto, 1fr);
   }
   .subj-container .subj-wrapper .subject,
-.subj-container .subj-wrapper .subj-type,
+.subj-container .subj-wrapper .subj-dsc,
 .subj-container .subj-wrapper .subj-extra,
 .subj-container .subj-wrapper .time {
     margin: 0.3vw 0;
@@ -468,7 +468,7 @@ h1 {
     font-size: 0.8vw;
     padding: 0 1vw;
   }
-  .subj-container .subj-wrapper .subj-type {
+  .subj-container .subj-wrapper .subj-dsc {
     font-size: 0.8vw;
     display: flex;
     flex-direction: row;
