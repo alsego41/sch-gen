@@ -4,69 +4,144 @@ import Subject from './components/Subject'
 import Modal from './components/Modal'
 import { useState } from 'react'
 
-const takeBtnParent = e => {
-  let object = e.target
-  while (!object.classList.contains('btn')){
-    object = object.parentNode
-  }
-  // console.log(object);
-  return object
-} 
-
 function App() {
   const modalObject = {
     wrapperClasses: 'invisible',
     title: '',
     modalClasses: '',
-    text: ''
+    text: '',
+    idOkBtn: ''
   }
   const [ modalConfig, setModalConfig ] = useState(modalObject)
 
   const handleClick = e => {
     let btnObject = takeBtnParent(e)
-    // console.log(btnObject);
-    // console.log(btnObject.id);
     if (btnObject.id === 'add-btn'){
-      document.querySelector('#datePicker').valueAsDate = new Date()
       setModalConfig({
         wrapperClasses: 'add',
         title: 'Add task',
         modalClasses: 'add',
-        text: 'Add'
+        text: 'Add',
+        idOkBtn: 'modalAddBtn'
       })
     }
     if (btnObject.id === 'edit-btn'){
-      document.querySelector('#datePicker').valueAsDate = new Date()
       setModalConfig({
         wrapperClasses: 'edit',
         title: 'Edit task',
         modalClasses: 'edit',
-        text: 'Edit'
+        text: 'Edit',
+        idOkBtn: 'modalEditBtn'
       })
     }
     if (btnObject.id === 'del-btn'){
-      document.querySelector('#datePicker').valueAsDate = new Date()
       setModalConfig({
         wrapperClasses: 'del',
         title: 'Delete task',
         modalClasses: 'del',
-        text: 'Delete'
+        text: 'Delete',
+        idOkBtn: 'modalDelBtn'
       })
     }
     if (btnObject.classList.contains('cancel')){
-      // console.log('cancel');
       setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
     }
-    // console.log();
   }
 
-  // console.log(new Date());
+  const handleApproval = e => {
+    let btnObject = takeBtnParent(e)
+    if (btnObject.id === 'modalAddBtn'){
+      addTask()
+    }
+    if (btnObject.id === 'modalEditBtn'){
 
+    }
+    if (btnObject.id === 'modalDelBtn'){
+
+    }
+  }
+
+  const takeBtnParent = e => {
+    let object = e.target
+    while (!object.classList.contains('btn')){
+      object = object.parentNode
+    }
+    return object
+  } 
+
+  const addTask = () => {
+    let form = document.querySelector('#modal-wrapper-add')
+    let inputs = form.querySelectorAll('input')
+    let select = form.querySelectorAll('select')
+    let task = {
+      name: inputs[0].value,
+      dsc: inputs[1].value,
+      start: inputs[2].value,
+      end: inputs[3].value,
+      color: inputs[4].value,
+      day: select[0].value,
+    }
+    if (checkCompletion(task)){
+      storeTask(task)
+      clearModal(inputs)
+    }
+    else {
+      console.log('Completion required');
+    }
+  }
+
+  const checkCompletion = task => {
+    let values = Object.values(task)
+    let empty = values.filter(input => input === '').length
+    if (empty === 1){
+      if (task.dsc === ''){
+        return true
+      }
+      else {
+        return false
+      }
+    } 
+    else if (empty > 1) {
+      return false
+    }
+  }
+
+  const storeTask = task => {
+    // createToken()
+    localStorage.setItem(createToken(), JSON.stringify(task))
+  }
+
+  const createToken = () => {
+    let token = ''
+    for (let i=0; i<10; i++){
+      token = token.concat(String.fromCharCode(Math.floor(Math.random() * 25) + 97))
+    }
+    return token
+  }
+
+  const clearModal = (inp) => {
+    inp.forEach(i => i.value = '')
+  }
+
+  const displayEvents = () => {
+    // retrieveEvent()
+    console.log('s');
+  }
+
+  const retrieveEvent = () => {
+    for (let i=0; i < localStorage.length; i++){
+      console.log(localStorage.key(i));
+      console.log(JSON.parse(localStorage.getItem(localStorage.key(i))));
+    }
+  }
+  retrieveEvent()
 
   return (
     <div className="App">
       <div id='modal-wrapper' className={modalConfig.wrapperClasses}>
-        <Modal modalType={modalConfig.title} modalClass={modalConfig.modalClasses} handleClick={handleClick} text={modalConfig.text} />
+        <Modal modalType={modalConfig.title} modalClass={modalConfig.modalClasses} id={'modal-wrapper-' + modalConfig.wrapperClasses}
+          handleClick={handleClick} text={modalConfig.text} handleApproval={handleApproval} idOkBtn={modalConfig.idOkBtn}
+        />
       </div>
       <h1>Schedule Generator</h1>
       <div id='btn-wrapper'>
