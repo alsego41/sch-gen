@@ -162,7 +162,7 @@ function App() {
     }
     console.log(obj);
     setSchedule(obj)
-    console.log(schedule);
+    // console.log(schedule);
   }, [update])
 
   return (
