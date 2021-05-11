@@ -6,30 +6,30 @@ const Modal  = (props) => {
             <p>{props.modalType}</p>
             <div className='modal-form' id={props.idForm}>
                 <label>Name
-                    <input type='text' placeholder='Workout...' required />
+                    <input type='text' placeholder='Workout...' required id='evName' />
                 </label>
                 <label>Description 
-                    <input type='text' placeholder='Lift...' />
+                    <input type='text' placeholder='Lift...' id='evDsc' />
                 </label>
                 <label>Day
-                    <select>
-                        <option>Monday</option>
-                        <option>Tuesday</option>
-                        <option>Wednesday</option>
-                        <option>Thursday</option>
-                        <option>Friday</option>
-                        <option>Saturday</option>
-                        <option>Sunday</option>
+                    <select id='evDay'>
+                        <option value='Monday'>Monday</option>
+                        <option value='Tuesday'>Tuesday</option>
+                        <option value='Wednesday'>Wednesday</option>
+                        <option value='Thursday'>Thursday</option>
+                        <option value='Friday'>Friday</option>
+                        <option value='Saturday'>Saturday</option>
+                        <option value='Sunday'>Sunday</option>
                     </select>
                 </label>
                 <label>Start
-                    <input type='time' required/>
+                    <input type='time' required id='evStart'/>
                 </label>
                 <label>End
-                    <input type='time' required/>
+                    <input type='time' required id='evEnd' />
                 </label>
                 <label>Color
-                    <input type='color'/>
+                    <input type='color' id='evColor' />
                 </label>
                 <div className='btn-modal-wrapper'>
                     <Button type='btn cancel' text='Cancel' handleClick={props.handleClick} />
