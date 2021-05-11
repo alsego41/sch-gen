@@ -24,9 +24,11 @@ function App() {
   const [ modalConfig, setModalConfig ] = useState(modalObject)
   const [ schedule, setSchedule ] = useState(schObj)
   const [ update, setUpdate ] = useState(false)
+  const [ canEdit, setEdit ] = useState(false)
+  // const [ canDelete, setDelete ] = useState(false)
 
   const handleClick = e => {
-    let btnObject = takeBtnParent(e)
+    let btnObject = takeBtnParent(e, 'btn')
     if (btnObject.id === 'add-btn'){
       setModalConfig({
         wrapperClasses: 'add',
@@ -35,15 +37,10 @@ function App() {
         text: 'Add',
         idOkBtn: 'modalAddBtn'
       })
+      setEdit(false)
     }
     if (btnObject.id === 'edit-btn'){
-      setModalConfig({
-        wrapperClasses: 'edit',
-        title: 'Edit task',
-        modalClasses: 'edit',
-        text: 'Edit',
-        idOkBtn: 'modalEditBtn'
-      })
+      setEdit(!canEdit)
     }
     if (btnObject.id === 'del-btn'){
       setModalConfig({
@@ -55,33 +52,43 @@ function App() {
       })
     }
     if (btnObject.classList.contains('cancel')){
+      setEdit(false)
       setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
     }
   }
 
   const handleApproval = e => {
-    let btnObject = takeBtnParent(e)
+    let btnObject = takeBtnParent(e, 'btn')
     if (btnObject.id === 'modalAddBtn'){
       addTask()
     }
     if (btnObject.id === 'modalEditBtn'){
-
+      console.log('hola');
+      if (addTask()){
+        setEdit(false)
+      }
     }
     if (btnObject.id === 'modalDelBtn'){
 
     }
   }
 
-  const takeBtnParent = e => {
+  const removeLastKeyStored = () => {
+    let wrapper = document.querySelector('#modal-wrapper-edit')
+    let id = wrapper.classList.item(wrapper.classList.length - 1)
+    localStorage.removeItem(id)
+  }
+
+  const takeBtnParent = (e, parent) => {
     let object = e.target
-    while (!object.classList.contains('btn')){
+    while (!object.classList.contains(parent)){
       object = object.parentNode
     }
     return object
   } 
 
   const addTask = () => {
-    let form = document.querySelector('#modal-wrapper-add')
+    let form = document.querySelector('.modal')
     let inputs = form.querySelectorAll('input')
     let select = form.querySelectorAll('select')
     let task = {
@@ -94,12 +101,17 @@ function App() {
     }
     if (checkCompletion(task)){
       storeTask(task)
+      if (canEdit){
+        removeLastKeyStored()
+      }
       clearModal(inputs)
       setUpdate(!update)
       setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
+      return true
     }
     else {
       console.log('Completion required');
+      return false
     }
   }
 
@@ -138,6 +150,22 @@ function App() {
     inp.forEach(i => i.value = '')
   }
 
+  if (canEdit){
+    let editBtn = document.querySelector('#edit-btn')
+    console.log(editBtn);
+    editBtn.classList.add('active')
+    let events = document.querySelectorAll('.subj-wrapper')
+    events.forEach(e => e.classList.add('editable'))
+  }  else {
+    setTimeout(() => {
+      let editBtn = document.querySelector('#edit-btn')
+      console.log(editBtn);
+      editBtn.classList.remove('active')
+    }, 0);
+    let events = document.querySelectorAll('.subj-wrapper')
+    events.forEach(e => e.classList.remove('editable'))
+  }
+
   useEffect(() => {
     let obj = {
       Monday: [],
@@ -160,10 +188,30 @@ function App() {
         color: item.color
       }
     }
-    console.log(obj);
+    // console.log(obj);
     setSchedule(obj)
     // console.log(schedule);
   }, [update])
+
+  const handleEventClick = (e) => {
+    let event = takeBtnParent(e, 'subj-wrapper')
+    if (canEdit) {
+      setModalConfig({
+        wrapperClasses: 'edit',
+        title: 'Edit task',
+        modalClasses: `edit ${event.id}`,
+        text: 'Edit',
+        idOkBtn: 'modalEditBtn'
+      })
+      let data = JSON.parse(localStorage.getItem(event.id))
+      document.querySelector('#evName').value = data.name
+      document.querySelector('#evDsc').value = data.dsc
+      document.querySelector('#evDay').value = data.day
+      document.querySelector('#evStart').value = data.start
+      document.querySelector('#evEnd').value = data.end
+      document.querySelector('#evColor').value = data.color
+    }
+  }
 
   return (
     <div className="App">
@@ -189,7 +237,8 @@ function App() {
           <div className='subj-container'>
             {schedule['Monday'].length > 0 ? 
                 schedule['Monday'].map(e => 
-                  <Subject 
+                  <Subject
+                    handleEventClick={handleEventClick} 
                     id={e.id}
                     color={e.color}
                     subject={e.name}
@@ -206,7 +255,8 @@ function App() {
           <div className='subj-container'>
             {schedule['Tuesday'].length > 0 ? 
               schedule['Tuesday'].map(e => 
-                <Subject 
+                <Subject
+                  handleEventClick={handleEventClick} 
                   id={e.id}
                   color={e.color}
                   subject={e.name}
@@ -223,7 +273,8 @@ function App() {
           <div className='subj-container'>
             {schedule['Wednesday'].length > 0 ? 
               schedule['Wednesday'].map(e => 
-                <Subject 
+                <Subject
+                  handleEventClick={handleEventClick} 
                   id={e.id}
                   color={e.color}
                   subject={e.name}
@@ -240,7 +291,8 @@ function App() {
           <div className='subj-container'>
             {schedule['Thursday'].length > 0 ? 
               schedule['Thursday'].map(e => 
-                <Subject 
+                <Subject
+                  handleEventClick={handleEventClick} 
                   id={e.id}
                   color={e.color}
                   subject={e.name}
@@ -257,7 +309,8 @@ function App() {
           <div className='subj-container'>
             {schedule['Friday'].length > 0 ? 
               schedule['Friday'].map(e => 
-                <Subject 
+                <Subject
+                  handleEventClick={handleEventClick} 
                   id={e.id}
                   color={e.color}
                   subject={e.name}
@@ -274,7 +327,8 @@ function App() {
           <div className='subj-container'>
             {schedule['Saturday'].length > 0 ? 
               schedule['Saturday'].map(e => 
-                <Subject 
+                <Subject
+                  handleEventClick={handleEventClick} 
                   id={e.id}
                   color={e.color}
                   subject={e.name}
@@ -291,7 +345,8 @@ function App() {
           <div className='subj-container'>
             {schedule['Sunday'].length > 0 ? 
               schedule['Sunday'].map(e => 
-                <Subject 
+                <Subject
+                  handleEventClick={handleEventClick} 
                   id={e.id}
                   color={e.color}
                   subject={e.name}
