@@ -96,6 +96,14 @@ function App() {
     let form = document.querySelector('.modal')
     let inputs = form.querySelectorAll('input')
     let select = form.querySelectorAll('select')
+    if (!canEdit){
+      inputs.forEach(i => {
+        i.removeAttribute('readonly') 
+        i.removeAttribute('disabled')}
+      )
+      clearModal(inputs)
+      select[0].removeAttribute('disabled')
+    }
     let task = {
       name: inputs[0].value,
       dsc: inputs[1].value,
@@ -157,9 +165,8 @@ function App() {
   const clearModal = (inp) => {
     inp.forEach(i => i.value = '')
   }
-
-  // Set events, editbtn and delbtn to have a special class in edit
   
+  // Set events, editbtn and delbtn to have a special class in edit
   if (canEdit || canDelete){
     let events = document.querySelectorAll('.subj-wrapper')
     events.forEach(e => e.classList.add('active'))
@@ -222,6 +229,19 @@ function App() {
   const handleEventClick = (e) => {
     let event = takeBtnParent(e, 'subj-wrapper')
     if (canEdit || canDelete) {
+      let data = JSON.parse(localStorage.getItem(event.id))
+      document.querySelector('#evName').removeAttribute('readonly')
+      document.querySelector('#evDsc').removeAttribute('readonly')
+      document.querySelector('#evDay').removeAttribute('disabled')
+      document.querySelector('#evStart').removeAttribute('readonly')
+      document.querySelector('#evEnd').removeAttribute('readonly')
+      document.querySelector('#evColor').removeAttribute('disabled')
+      document.querySelector('#evName').value = data.name
+      document.querySelector('#evDsc').value = data.dsc
+      document.querySelector('#evDay').value = data.day
+      document.querySelector('#evStart').value = data.start
+      document.querySelector('#evEnd').value = data.end
+      document.querySelector('#evColor').value = data.color
       if (canEdit){
       setModalConfig({
         wrapperClasses: 'edit',
@@ -231,20 +251,20 @@ function App() {
         idOkBtn: 'modalEditBtn'
       })}
       else if (canDelete) {
-      setModalConfig({
-        wrapperClasses: 'del',
-        title: 'Delete task',
-        modalClasses: 'del',
-        text: 'Delete',
-        idOkBtn: 'modalDelBtn'
-      })}
-      let data = JSON.parse(localStorage.getItem(event.id))
-      document.querySelector('#evName').value = data.name
-      document.querySelector('#evDsc').value = data.dsc
-      document.querySelector('#evDay').value = data.day
-      document.querySelector('#evStart').value = data.start
-      document.querySelector('#evEnd').value = data.end
-      document.querySelector('#evColor').value = data.color
+        setModalConfig({
+          wrapperClasses: 'del',
+          title: 'Delete task',
+          modalClasses: 'del',
+          text: 'Delete',
+          idOkBtn: 'modalDelBtn'
+        })
+        document.querySelector('#evName').setAttribute('readonly', true)
+        document.querySelector('#evDsc').setAttribute('readonly', true)
+        document.querySelector('#evDay').setAttribute('disabled', true)
+        document.querySelector('#evStart').setAttribute('readonly', true)
+        document.querySelector('#evEnd').setAttribute('readonly', true)
+        document.querySelector('#evColor').setAttribute('disabled', true)
+      } 
     }
   }
 
