@@ -56,6 +56,14 @@ h1 {
   color: black;
   opacity: 0.7;
 }
+.btn.active.del {
+  background-color: #f54235;
+  cursor: pointer;
+}
+.btn.active.del p, .btn.active.del .btn-icon {
+  color: black;
+  opacity: 0.7;
+}
 .btn.active svg {
   fill: black;
   opacity: 0.7;
@@ -156,6 +164,10 @@ h1 {
   grid-area: time;
   font-size: 3.75vw;
   text-align: end;
+}
+.subj-wrapper.active:hover {
+  border: 0.2vw solid white;
+  cursor: pointer;
 }
 
 #modal-wrapper {
@@ -284,11 +296,6 @@ h1 {
 
 #sch-hours {
   display: none;
-}
-
-.editable:hover {
-  border: 0.2vw solid white;
-  cursor: pointer;
 }
 
 @media screen and (min-width: 540px) {

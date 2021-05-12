@@ -25,8 +25,9 @@ function App() {
   const [ schedule, setSchedule ] = useState(schObj)
   const [ update, setUpdate ] = useState(false)
   const [ canEdit, setEdit ] = useState(false)
-  // const [ canDelete, setDelete ] = useState(false)
+  const [ canDelete, setDelete ] = useState(false)
 
+  // Handle main button clicks
   const handleClick = e => {
     let btnObject = takeBtnParent(e, 'btn')
     if (btnObject.id === 'add-btn'){
@@ -38,25 +39,25 @@ function App() {
         idOkBtn: 'modalAddBtn'
       })
       setEdit(false)
+      setDelete(false)
     }
     if (btnObject.id === 'edit-btn'){
       setEdit(!canEdit)
+      setDelete(false)
     }
     if (btnObject.id === 'del-btn'){
-      setModalConfig({
-        wrapperClasses: 'del',
-        title: 'Delete task',
-        modalClasses: 'del',
-        text: 'Delete',
-        idOkBtn: 'modalDelBtn'
-      })
+      // console.log(!canDelete);
+      setDelete(!canDelete)
+      setEdit(false)
     }
     if (btnObject.classList.contains('cancel')){
       setEdit(false)
+      setDelete(false)
       setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
     }
   }
 
+  // Handle modal approval buttons
   const handleApproval = e => {
     let btnObject = takeBtnParent(e, 'btn')
     if (btnObject.id === 'modalAddBtn'){
@@ -69,16 +70,19 @@ function App() {
       }
     }
     if (btnObject.id === 'modalDelBtn'){
-
+      // removeLastKeyStored()
+      setDelete(false)
     }
   }
 
+  // Remove localStorage key of an event being edited, so the edited is re-created.
   const removeLastKeyStored = () => {
     let wrapper = document.querySelector('#modal-wrapper-edit')
     let id = wrapper.classList.item(wrapper.classList.length - 1)
     localStorage.removeItem(id)
   }
 
+  // Return a given 'main' parent of a clicked element.
   const takeBtnParent = (e, parent) => {
     let object = e.target
     while (!object.classList.contains(parent)){
@@ -87,6 +91,7 @@ function App() {
     return object
   } 
 
+  // Retrieve data from modal form and call other functions to store and show it.
   const addTask = () => {
     let form = document.querySelector('.modal')
     let inputs = form.querySelectorAll('input')
@@ -115,6 +120,7 @@ function App() {
     }
   }
 
+  // Check Completion of modal form
   const checkCompletion = task => {
     let values = Object.values(task)
     let empty = values.filter(input => input === '').length
@@ -133,11 +139,12 @@ function App() {
     }
   }
 
+  // Store an event in localStorage
   const storeTask = task => {
-    // createToken()
     localStorage.setItem(createToken(), JSON.stringify(task))
   }
 
+  // Create a 'token' id for each event key
   const createToken = () => {
     let token = ''
     for (let i=0; i<10; i++){
@@ -146,26 +153,44 @@ function App() {
     return token
   }
 
+  // Empty the modal
   const clearModal = (inp) => {
     inp.forEach(i => i.value = '')
   }
 
-  if (canEdit){
-    let editBtn = document.querySelector('#edit-btn')
-    console.log(editBtn);
-    editBtn.classList.add('active')
+  // Set events, editbtn and delbtn to have a special class in edit
+  
+  if (canEdit || canDelete){
     let events = document.querySelectorAll('.subj-wrapper')
-    events.forEach(e => e.classList.add('editable'))
+    events.forEach(e => e.classList.add('active'))
+    if (canEdit){
+      let editBtn = document.querySelector('#edit-btn')
+      editBtn.classList.add('active')
+      let delBtn = document.querySelector('#del-btn')
+      delBtn.classList.remove('active')
+    }
+    else if (canDelete){
+      let delBtn = document.querySelector('#del-btn')
+      delBtn.classList.add('active')
+      let editBtn = document.querySelector('#edit-btn')
+      editBtn.classList.remove('active')
+    }
   }  else {
     setTimeout(() => {
-      let editBtn = document.querySelector('#edit-btn')
-      console.log(editBtn);
-      editBtn.classList.remove('active')
+      if (!canEdit){
+        let editBtn = document.querySelector('#edit-btn')
+        editBtn.classList.remove('active')
+      }
+      if (!canDelete){
+        let delBtn = document.querySelector('#del-btn')
+        delBtn.classList.remove('active')
+      }
     }, 0);
     let events = document.querySelectorAll('.subj-wrapper')
-    events.forEach(e => e.classList.remove('editable'))
+    events.forEach(e => e.classList.remove('active'))
   }
 
+  // Update schedule with localStorage
   useEffect(() => {
     let obj = {
       Monday: [],
@@ -193,16 +218,26 @@ function App() {
     // console.log(schedule);
   }, [update])
 
+  // Modal Edit and Delete Clicks
   const handleEventClick = (e) => {
     let event = takeBtnParent(e, 'subj-wrapper')
-    if (canEdit) {
+    if (canEdit || canDelete) {
+      if (canEdit){
       setModalConfig({
         wrapperClasses: 'edit',
         title: 'Edit task',
         modalClasses: `edit ${event.id}`,
         text: 'Edit',
         idOkBtn: 'modalEditBtn'
-      })
+      })}
+      else if (canDelete) {
+      setModalConfig({
+        wrapperClasses: 'del',
+        title: 'Delete task',
+        modalClasses: 'del',
+        text: 'Delete',
+        idOkBtn: 'modalDelBtn'
+      })}
       let data = JSON.parse(localStorage.getItem(event.id))
       document.querySelector('#evName').value = data.name
       document.querySelector('#evDsc').value = data.dsc
