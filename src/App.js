@@ -47,7 +47,6 @@ function App() {
       setDelete(false)
     }
     if (btnObject.id === 'del-btn'){
-      // console.log(!canDelete);
       setDelete(!canDelete)
       setEdit(false)
     }
@@ -65,7 +64,6 @@ function App() {
       addTask()
     }
     if (btnObject.id === 'modalEditBtn'){
-      // console.log('hola');
       if (addTask()){
         setEdit(false)
       }
