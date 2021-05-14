@@ -153,55 +153,40 @@ h1 {
         user-select: none;
     }
 }
+
+%event-text {
+    @include mopo();
+    @include textOpac();
+    user-select: text;
+    vertical-align: middle;
+    padding: 0.25vw 4.5vw;
+    overflow: hidden;
+}
+
 .subj-wrapper {
     width: 85vw;
-    margin: 3vw auto;
+    margin: 2vw auto;
     border-radius: 12px;
     background-color: #D1DF71;
-    display: grid;
-    grid-template-areas: 
-        'subj subj extra'
-        'type time time';
-    p {
-        @include mopo();
-        @include textOpac();
-        // font-weight: 700;
-        display: inline-block;
-        padding: 4vw 4vw;
-        user-select: text;
-    }
+    display: flex;
+    flex-direction: column;
+    padding: 2vw 0;
+
     .subject {
-        font-size: 4.5vw;
-        grid-area: subj;
+        font-size: 4.75vw;
         font-weight: 700;
-    }
-    .subj-extra {
-        grid-area: extra;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-end;
-        white-space: nowrap;
-        padding: 4vw 0 0;
-        
-        p {
-            font-size: 3vw;
-            font-weight: 600;
-            padding-top: 0;
-            padding-bottom: 0;
-            overflow-x: visible;
-        }
+        @extend %event-text;
     }
     .subj-dsc{
-        font-weight: 700;
-        font-size: 3vw;
-        grid-area: type;
+        font-size: 3.25vw;
+        font-weight: 600;
+        @extend %event-text;
     }
     .time {
         font-weight: 700;
-        grid-area: time;
-        font-size: 3.75vw;
+        font-size: 4.25vw;
         text-align: end;
+        @extend %event-text;
     }
     &.active:hover {
         border: 0.2vw solid white;
