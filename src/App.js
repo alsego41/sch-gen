@@ -31,14 +31,13 @@ function App() {
   const handleClick = e => {
     let btnObject = takeBtnParent(e, 'btn')
     if (btnObject.id === 'add-btn'){
-      setModalConfig({
+      showModal({
         wrapperClasses: 'add',
         title: 'Add task',
         modalClasses: 'add',
         text: 'Add',
         idOkBtn: 'modalAddBtn'
       })
-      showModal()
       clearModal(true)
       setEdit(false)
       setDelete(false)
@@ -46,32 +45,30 @@ function App() {
     if (btnObject.id === 'edit-btn'){
       setEdit(!canEdit)
       setDelete(false)
-      // showModal()
     }
     if (btnObject.id === 'del-btn'){
       setDelete(!canDelete)
       setEdit(false)
-      // showModal()
-    }
-    if (btnObject.classList.contains('cancel')){
-      setEdit(false)
-      setDelete(false)
-      setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
-      closeModal()
     }
   }
 
+  // Active modal
+  const showModal = (props) => {
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    setModalConfig(props)
+  }
+
+  // De-activate modal
   const closeModal = () => {
     const scrollY = Number(document.body.style.top.slice(1, -2))
     document.body.style.position = ''
     document.body.style.top = ''
     window.scrollTo(0, scrollY)
-  }
-
-  const showModal = () => {
-    const scrollY = window.scrollY;
-    document.body.style.position = 'fixed'
-    document.body.style.top = `-${scrollY}px`
+    setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
+    setEdit(false)
+    setDelete(false)
   }
 
   // Handle modal approval buttons
@@ -87,7 +84,6 @@ function App() {
     }
     if (btnObject.id === 'modalDelBtn'){
       removeLastKeyStored('del')
-      setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
       setDelete(false)
       setUpdate(!update)
     }
@@ -261,24 +257,22 @@ function App() {
       document.querySelector('#evEnd').value = data.end
       document.querySelector('#evColor').value = data.color
       if (canEdit){
-        setModalConfig({
+        showModal({
           wrapperClasses: 'edit',
           title: 'Edit task',
           modalClasses: `edit ${event.id}`,
           text: 'Edit',
           idOkBtn: 'modalEditBtn'
         })
-        showModal()
       }
       else if (canDelete) {
-        setModalConfig({
+        showModal({
           wrapperClasses: 'del',
           title: 'Delete task',
           modalClasses: `del ${event.id}`,
           text: 'Delete',
           idOkBtn: 'modalDelBtn'
         })
-        showModal()
         document.querySelector('#evName').setAttribute('readonly', true)
         document.querySelector('#evDsc').setAttribute('readonly', true)
         document.querySelector('#evDay').setAttribute('disabled', true)
@@ -433,8 +427,15 @@ function App() {
         </div>
       </div>
       <div id='modal-wrapper' className={modalConfig.wrapperClasses}>
-          <Modal modalType={modalConfig.title} modalClass={modalConfig.modalClasses} id={'modal-wrapper-' + modalConfig.wrapperClasses}
-            handleClick={handleClick} text={modalConfig.text} handleApproval={handleApproval} idOkBtn={modalConfig.idOkBtn}
+          <Modal 
+            modalType={modalConfig.title} 
+            modalClass={modalConfig.modalClasses} 
+            id={'modal-wrapper-' + modalConfig.wrapperClasses}
+            idOkBtn={modalConfig.idOkBtn}
+            text={modalConfig.text} 
+            handleClick={handleClick} 
+            handleApproval={handleApproval} 
+            closeModal={closeModal}
           />
         </div>
     </>

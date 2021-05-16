@@ -32,7 +32,7 @@ const Modal  = (props) => {
                     <input type='color' id='evColor' />
                 </label>
                 <div className='btn-modal-wrapper'>
-                    <Button type='btn cancel' text='Cancel' handleClick={props.handleClick} />
+                    <Button type='btn cancel' text='Cancel' handleClick={props.closeModal} />
                     <Button type='btn ok' text={props.text} handleClick={props.handleApproval} id={props.idOkBtn} />
                 </div>
             </div>
