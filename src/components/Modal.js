@@ -3,7 +3,7 @@ import Button from './Button'
 const Modal  = (props) => {
     return (
         <div id={props.id} className={'modal ' + props.modalClass}>
-            <p>{props.modalType}</p>
+            <p className='modal-title'>{props.modalType}</p>
             <div className='modal-form' id={props.idForm}>
                 <label>Name
                     <input type='text' placeholder='Workout...' required id='evName' />

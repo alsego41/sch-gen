@@ -426,18 +426,20 @@ function App() {
           </div>
         </div>
       </div>
-      <div id='modal-wrapper' className={modalConfig.wrapperClasses}>
-          <Modal 
-            modalType={modalConfig.title} 
-            modalClass={modalConfig.modalClasses} 
-            id={'modal-wrapper-' + modalConfig.wrapperClasses}
-            idOkBtn={modalConfig.idOkBtn}
-            text={modalConfig.text} 
-            handleClick={handleClick} 
-            handleApproval={handleApproval} 
-            closeModal={closeModal}
-          />
-        </div>
+      <div 
+        id='modal-wrapper' 
+        className={modalConfig.wrapperClasses}>
+        <Modal 
+          modalType={modalConfig.title} 
+          modalClass={modalConfig.modalClasses} 
+          id={'modal-wrapper-' + modalConfig.wrapperClasses}
+          idOkBtn={modalConfig.idOkBtn}
+          text={modalConfig.text} 
+          handleClick={handleClick} 
+          handleApproval={handleApproval} 
+          closeModal={closeModal}
+        />
+      </div>
     </>
   );
 }
