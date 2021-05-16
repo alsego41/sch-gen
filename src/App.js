@@ -38,6 +38,7 @@ function App() {
         text: 'Add',
         idOkBtn: 'modalAddBtn'
       })
+      showModal()
       clearModal(true)
       setEdit(false)
       setDelete(false)
@@ -45,16 +46,32 @@ function App() {
     if (btnObject.id === 'edit-btn'){
       setEdit(!canEdit)
       setDelete(false)
+      // showModal()
     }
     if (btnObject.id === 'del-btn'){
       setDelete(!canDelete)
       setEdit(false)
+      // showModal()
     }
     if (btnObject.classList.contains('cancel')){
       setEdit(false)
       setDelete(false)
       setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
+      closeModal()
     }
+  }
+
+  const closeModal = () => {
+    const scrollY = Number(document.body.style.top.slice(1, -2))
+    document.body.style.position = ''
+    document.body.style.top = ''
+    window.scrollTo(0, scrollY)
+  }
+
+  const showModal = () => {
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
   }
 
   // Handle modal approval buttons
@@ -74,6 +91,7 @@ function App() {
       setDelete(false)
       setUpdate(!update)
     }
+    closeModal()
   }
 
   // Remove localStorage key of an event being edited, so the edited is re-created.
@@ -250,6 +268,7 @@ function App() {
           text: 'Edit',
           idOkBtn: 'modalEditBtn'
         })
+        showModal()
       }
       else if (canDelete) {
         setModalConfig({
@@ -259,6 +278,7 @@ function App() {
           text: 'Delete',
           idOkBtn: 'modalDelBtn'
         })
+        showModal()
         document.querySelector('#evName').setAttribute('readonly', true)
         document.querySelector('#evDsc').setAttribute('readonly', true)
         document.querySelector('#evDay').setAttribute('disabled', true)
@@ -270,29 +290,43 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <div id='modal-wrapper' className={modalConfig.wrapperClasses}>
-        <Modal modalType={modalConfig.title} modalClass={modalConfig.modalClasses} id={'modal-wrapper-' + modalConfig.wrapperClasses}
-          handleClick={handleClick} text={modalConfig.text} handleApproval={handleApproval} idOkBtn={modalConfig.idOkBtn}
-        />
-      </div>
-      <h1>Schedule Generator</h1>
-      <div id='btn-wrapper'>
-        <Button handleClick={handleClick} text='Add task' id='add-btn' 
-          type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' 
-        />
-        <Button handleClick={handleClick} text='Edit task' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
-        <Button handleClick={handleClick} text='Delete task' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
-      </div>
-      <div id='days-wrapper'>
-        <div className='days' id='sch-hours'>
-          <p>Hours</p>
+    <>
+      <div className="App">       
+        <h1>Schedule Generator</h1>
+        <div id='btn-wrapper'>
+          <Button handleClick={handleClick} text='Add task' id='add-btn' 
+            type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' 
+          />
+          <Button handleClick={handleClick} text='Edit task' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
+          <Button handleClick={handleClick} text='Delete task' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
         </div>
-        <div id='mon' className='days'>
-          <p>Monday</p>
-          <div className='subj-container'>
-            {schedule['Monday'].length > 0 ? 
-                schedule['Monday'].map(e => 
+        <div id='days-wrapper'>
+          <div className='days' id='sch-hours'>
+            <p>Hours</p>
+          </div>
+          <div id='mon' className='days'>
+            <p>Monday</p>
+            <div className='subj-container'>
+              {schedule['Monday'].length > 0 ? 
+                  schedule['Monday'].map(e => 
+                    <Subject
+                      handleEventClick={handleEventClick} 
+                      id={e.id}
+                      color={e.color}
+                      subject={e.name}
+                      subjDsc={e.dsc}
+                      timeStart={e.start}
+                      timeEnd={e.end}
+                    />
+                  ) : <></> 
+              }
+            </div>
+          </div>
+          <div id='tue' className='days'>
+            <p>Tuesday</p>
+            <div className='subj-container'>
+              {schedule['Tuesday'].length > 0 ? 
+                schedule['Tuesday'].map(e => 
                   <Subject
                     handleEventClick={handleEventClick} 
                     id={e.id}
@@ -303,119 +337,107 @@ function App() {
                     timeEnd={e.end}
                   />
                 ) : <></> 
-            }
+              }
+            </div>
           </div>
-        </div>
-        <div id='tue' className='days'>
-          <p>Tuesday</p>
-          <div className='subj-container'>
-            {schedule['Tuesday'].length > 0 ? 
-              schedule['Tuesday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
+          <div id='wed' className='days'>
+            <p>Wednesday</p>
+            <div className='subj-container'>
+              {schedule['Wednesday'].length > 0 ? 
+                schedule['Wednesday'].map(e => 
+                  <Subject
+                    handleEventClick={handleEventClick} 
+                    id={e.id}
+                    color={e.color}
+                    subject={e.name}
+                    subjDsc={e.dsc}
+                    timeStart={e.start}
+                    timeEnd={e.end}
+                  />
+                ) : <></> 
+              }
+            </div>
           </div>
-        </div>
-        <div id='wed' className='days'>
-          <p>Wednesday</p>
-          <div className='subj-container'>
-            {schedule['Wednesday'].length > 0 ? 
-              schedule['Wednesday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
+          <div id='thu' className='days'>
+            <p>Thursday</p>
+            <div className='subj-container'>
+              {schedule['Thursday'].length > 0 ? 
+                schedule['Thursday'].map(e => 
+                  <Subject
+                    handleEventClick={handleEventClick} 
+                    id={e.id}
+                    color={e.color}
+                    subject={e.name}
+                    subjDsc={e.dsc}
+                    timeStart={e.start}
+                    timeEnd={e.end}
+                  />
+                ) : <></> 
+              }
+            </div>
           </div>
-        </div>
-        <div id='thu' className='days'>
-          <p>Thursday</p>
-          <div className='subj-container'>
-            {schedule['Thursday'].length > 0 ? 
-              schedule['Thursday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
+          <div id='fri' className='days'>
+            <p>Friday</p>
+            <div className='subj-container'>
+              {schedule['Friday'].length > 0 ? 
+                schedule['Friday'].map(e => 
+                  <Subject
+                    handleEventClick={handleEventClick} 
+                    id={e.id}
+                    color={e.color}
+                    subject={e.name}
+                    subjDsc={e.dsc}
+                    timeStart={e.start}
+                    timeEnd={e.end}
+                  />
+                ) : <></> 
+              }
+            </div>
           </div>
-        </div>
-        <div id='fri' className='days'>
-          <p>Friday</p>
-          <div className='subj-container'>
-            {schedule['Friday'].length > 0 ? 
-              schedule['Friday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
+          <div id='sat' className='days'>
+            <p>Saturday</p>
+            <div className='subj-container'>
+              {schedule['Saturday'].length > 0 ? 
+                schedule['Saturday'].map(e => 
+                  <Subject
+                    handleEventClick={handleEventClick} 
+                    id={e.id}
+                    color={e.color}
+                    subject={e.name}
+                    subjDsc={e.dsc}
+                    timeStart={e.start}
+                    timeEnd={e.end}
+                  />
+                ) : <></> 
+              }
+            </div>
           </div>
-        </div>
-        <div id='sat' className='days'>
-          <p>Saturday</p>
-          <div className='subj-container'>
-            {schedule['Saturday'].length > 0 ? 
-              schedule['Saturday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
-          </div>
-        </div>
-        <div id='sun' className='days'>
-          <p>Sunday</p>
-          <div className='subj-container'>
-            {schedule['Sunday'].length > 0 ? 
-              schedule['Sunday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
+          <div id='sun' className='days'>
+            <p>Sunday</p>
+            <div className='subj-container'>
+              {schedule['Sunday'].length > 0 ? 
+                schedule['Sunday'].map(e => 
+                  <Subject
+                    handleEventClick={handleEventClick} 
+                    id={e.id}
+                    color={e.color}
+                    subject={e.name}
+                    subjDsc={e.dsc}
+                    timeStart={e.start}
+                    timeEnd={e.end}
+                  />
+                ) : <></> 
+              }
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div id='modal-wrapper' className={modalConfig.wrapperClasses}>
+          <Modal modalType={modalConfig.title} modalClass={modalConfig.modalClasses} id={'modal-wrapper-' + modalConfig.wrapperClasses}
+            handleClick={handleClick} text={modalConfig.text} handleApproval={handleApproval} idOkBtn={modalConfig.idOkBtn}
+          />
+        </div>
+    </>
   );
 }
 
