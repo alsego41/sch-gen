@@ -319,7 +319,7 @@ h1 {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: 1fr;
-    gap: .15vw;
+    gap: .75vw;
     margin: 1.5vw 0;
 }
 
@@ -328,8 +328,8 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 4vw;
-    width: 4vw;
+    height: 5vw;
+    width: 5vw;
     border-radius: 50%;
     border: .1vw solid rgba(0,0,0,0.7);
 
@@ -443,6 +443,18 @@ h1 {
                 padding: 0.5vw 2vw;
                 margin: 0;            
             }
+        }
+    }
+    .radio-button-wrapper {
+        margin: 1vw 0;
+        gap: .5vw;
+    }
+    .radio-button {
+        height: 2.5vw;
+        width: 2.5vw;
+
+        p {
+            font-size: 1.25vw;
         }
     }
 }
@@ -562,6 +574,18 @@ h1 {
                 padding: 0.25vw 1.5vw;
                 margin: 0;
             }
+        }
+    }
+    .radio-button-wrapper {
+        margin: .5vw 0;
+        gap: .25vw;
+    }
+    .radio-button {
+        height: 1.75vw;
+        width: 1.75vw;
+
+        p {
+            font-size: 1vw;
         }
     }
 }

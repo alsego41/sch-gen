@@ -286,7 +286,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: 1fr;
-  gap: 0.15vw;
+  gap: 0.75vw;
   margin: 1.5vw 0;
 }
 
@@ -295,8 +295,8 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 4vw;
-  width: 4vw;
+  height: 5vw;
+  width: 5vw;
   border-radius: 50%;
   border: 0.1vw solid rgba(0, 0, 0, 0.7);
 }
@@ -408,6 +408,19 @@ h1 {
     font-weight: 700;
     padding: 0.5vw 2vw;
     margin: 0;
+  }
+
+  .radio-button-wrapper {
+    margin: 1vw 0;
+    gap: 0.5vw;
+  }
+
+  .radio-button {
+    height: 2.5vw;
+    width: 2.5vw;
+  }
+  .radio-button p {
+    font-size: 1.25vw;
   }
 }
 @media screen and (min-width: 1366px) {
@@ -534,6 +547,19 @@ h1 {
     font-size: 1.15vw;
     padding: 0.25vw 1.5vw;
     margin: 0;
+  }
+
+  .radio-button-wrapper {
+    margin: 0.5vw 0;
+    gap: 0.25vw;
+  }
+
+  .radio-button {
+    height: 1.75vw;
+    width: 1.75vw;
+  }
+  .radio-button p {
+    font-size: 1vw;
   }
 }
 

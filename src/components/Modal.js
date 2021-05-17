@@ -43,7 +43,7 @@ const Modal  = (props) => {
                 <label>Color
                     <input type='color' id='evColor' />
                 </label>
-                <label>Colors
+                <label>Color
                     <div className='radio-button-wrapper radio-button-wrapper__day'>
                         <RadioButton color='rgb(255, 30, 0)' classRadio='radio-button radio-button__color' />
                         <RadioButton color='rgb(255, 184, 53)' classRadio='radio-button radio-button__color' />
