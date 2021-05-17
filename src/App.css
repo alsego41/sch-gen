@@ -205,7 +205,6 @@ h1 {
   width: 70%;
 }
 .modal select:active, .modal input:active, .modal select:focus, .modal input:focus {
-  border-radius: 2vw;
   border: 0.1vw solid rgba(0, 0, 0, 0.7);
 }
 
