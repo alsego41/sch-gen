@@ -256,6 +256,7 @@ h1 {
     flex-direction: column;
     margin: 0 auto;
     width: 80vw;
+    max-height: 100vh;
 
     .modal-title {
         @extend %modal-text;
@@ -298,12 +299,27 @@ h1 {
     }
     &.add {
         background-color: $green;
+
+        .radio-button__days__active,
+        .radio-button__days:hover {
+            color: $green;
+        }
     }
     &.edit {
         background-color: $blue;
+
+        .radio-button__days__active,
+        .radio-button__days:hover {
+            color: $blue;
+        }
     }
     &.del {
         background-color: $red;
+
+        .radio-button__days__active,
+        .radio-button__days:hover {
+            color: $red;
+        }
     }
 }
 
@@ -332,6 +348,8 @@ h1 {
     width: 5vw;
     border-radius: 50%;
     border: .1vw solid rgba(0,0,0,0.7);
+    cursor: pointer;
+    user-select: none;
 
     p {
         display: inline;
@@ -342,16 +360,24 @@ h1 {
     &.radio-button__days__active,
     &.radio-button__days:hover {
         background-color: rgba(0,0,0,0.7);
-        // color: rgb(255, 30, 0);
-        // color: $green; css-in-js solution
-        cursor: pointer;
-        color: $green;
     }
 
     &.radio-button__color {
-        // opacity: 1;
+        border: .1vw solid rgba(0,0,0,0);
+        opacity: .5;
         cursor: pointer;
     }
+
+    &.radio-button__color:hover,
+    &.radio-button__color__active {
+        border: .1vw solid rgba(0,0,0,.7);
+        opacity: 1;
+        box-shadow: 0px 3px 10px rgb(0, 0, 0, .75);
+    }
+}
+
+.unclickable {
+    pointer-events: none;
 }
 
 @media screen and (min-width: 540px) {

@@ -25,13 +25,13 @@ const Modal  = (props) => {
                 </label>
                 <label>Days
                     <div className='radio-button-wrapper radio-button-wrapper__day'>
-                        <RadioButton text='M' classRadio='radio-button radio-button__days' />
-                        <RadioButton text='Tu' classRadio='radio-button radio-button__days' />
-                        <RadioButton text='W' classRadio='radio-button radio-button__days' />
-                        <RadioButton text='Th' classRadio='radio-button radio-button__days radio-button__days__active' />
-                        <RadioButton text='F' classRadio='radio-button radio-button__days' />
-                        <RadioButton text='Sa' classRadio='radio-button radio-button__days' />
-                        <RadioButton text='Su' classRadio='radio-button radio-button__days radio-button__days__active' />
+                        <RadioButton text='M' classRadio='radio-button radio-button__days' radioBtnClick={props.dayBtnClick} />
+                        <RadioButton text='Tu' classRadio='radio-button radio-button__days' radioBtnClick={props.dayBtnClick} />
+                        <RadioButton text='W' classRadio='radio-button radio-button__days radio-button__days__active' radioBtnClick={props.dayBtnClick} />
+                        <RadioButton text='Th' classRadio='radio-button radio-button__days' radioBtnClick={props.dayBtnClick} />
+                        <RadioButton text='F' classRadio='radio-button radio-button__days' radioBtnClick={props.dayBtnClick} />
+                        <RadioButton text='Sa' classRadio='radio-button radio-button__days' radioBtnClick={props.dayBtnClick} />
+                        <RadioButton text='Su' classRadio='radio-button radio-button__days' radioBtnClick={props.dayBtnClick} />
                     </div>
                 </label>
                 <label>Start
@@ -45,13 +45,13 @@ const Modal  = (props) => {
                 </label>
                 <label>Color
                     <div className='radio-button-wrapper radio-button-wrapper__day'>
-                        <RadioButton color='rgb(255, 30, 0)' classRadio='radio-button radio-button__color' />
-                        <RadioButton color='rgb(255, 184, 53)' classRadio='radio-button radio-button__color' />
-                        <RadioButton color='rgb(252, 248, 33)' classRadio='radio-button radio-button__color' />
-                        <RadioButton color='rgb(33, 252, 150)' classRadio='radio-button radio-button__color radio-button__color__active' />
-                        <RadioButton color='rgb(33, 237, 252)' classRadio='radio-button radio-button__color' />
-                        <RadioButton color='rgb(33, 121, 252)' classRadio='radio-button radio-button__color' />
-                        <RadioButton color='rgb(153, 33, 252)' classRadio='radio-button radio-button__color radio-button__color__active' />
+                        <RadioButton color='rgb(255, 30, 0)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
+                        <RadioButton color='rgb(255, 184, 53)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
+                        <RadioButton color='rgb(252, 248, 33)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
+                        <RadioButton color='rgb(33, 252, 150)' classRadio='radio-button radio-button__color radio-button__color__active' radioBtnClick={props.colorBtnClick} />
+                        <RadioButton color='rgb(33, 237, 252)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
+                        <RadioButton color='rgb(33, 121, 252)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
+                        <RadioButton color='rgb(153, 33, 252)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
                     </div>
                 </label>
                 <div className='btn-modal-wrapper'>

@@ -52,7 +52,7 @@ function App() {
     }
   }
 
-  // Active modal
+  // Activate modal
   const showModal = (props) => {
     const scrollY = window.scrollY;
     document.body.style.position = 'fixed'
@@ -128,19 +128,13 @@ function App() {
   // Check Completion of modal form
   const checkCompletion = task => {
     let values = Object.values(task)
-    let empty = values.filter(input => input === '').length
+    let empty = values.filter(value => value === '' && typeof value === 'string').length
+    if (task.days.length === 0) ++empty 
+    if (empty === 0) return true
+    if (empty > 1) return false
     if (empty === 1){
-      if (task.dsc === ''){
-        return true
-      }
-      else {
-        return false
-      }
-    } 
-    else if (empty > 1) {
-      return false
-    } else if (empty === 0){
-      return true
+      if (task.dsc === '') return true
+      else return false
     }
   }
 
@@ -159,33 +153,67 @@ function App() {
   }
 
   const getDataFromModal = () => {
+    // let dBtns = document.querySelectorAll('.radio-button__days__active')
+    // let days = []
+    // dBtns.forEach(dB => days.push(dB.innerText));
+    // let color = document.querySelector('.radio-button__color__active')
+    // // console.log(days);
+    // let data2 = {
+    //   name: document.querySelector('#evName').value,
+    //   dsc: document.querySelector('#evDsc').value,
+    //   start: document.querySelector('#evStart').value,
+    //   end: document.querySelector('#evEnd').value,
+    //   color: color.style.backgroundColor,
+    //   day: document.querySelector('#evDay').value
+    // }
+
+    let inputs = modalInputs()
+    inputs[2] = Array.from(inputs[2]).filter(i => i.classList.contains('radio-button__days__active'))
+    inputs[5] = Array.from(inputs[5]).filter(i => i.classList.contains('radio-button__color__active'))[0]
+    // console.log(inputs);
+
     let data = {
-      name: document.querySelector('#evName').value,
-      dsc: document.querySelector('#evDsc').value,
-      start: document.querySelector('#evStart').value,
-      end: document.querySelector('#evEnd').value,
-      color: document.querySelector('#evColor').value,
-      day: document.querySelector('#evDay').value
+      name: inputs[0].value,
+      dsc: inputs[1].value,
+      days: inputs[2].map(i => i.innerText),
+      start: inputs[3].value,
+      end: inputs[4].value,
+      color: inputs[5].style.backgroundColor,
     }
+    // console.log(data);
+
+    console.log(arrToDay(data.days));
     return data
   }
 
+  const modalInputs = () => {
+    let inputs = []
+    inputs.push(document.querySelector('#evName'))
+    inputs.push(document.querySelector('#evDsc'))
+    inputs.push(document.querySelectorAll('.radio-button__days'))
+    inputs.push(document.querySelector('#evStart'))
+    inputs.push(document.querySelector('#evEnd'))
+    inputs.push(document.querySelectorAll('.radio-button__color'))
+    return inputs
+  }
+
+  // console.log(modalInputs());
+
   // Empty the modal and remove readonly attrs
   const clearModal = (remove) => {
-    document.querySelector('#evName').value = ''
-    document.querySelector('#evDsc').value = ''
-    document.querySelector('#evStart').value = ''
-    document.querySelector('#evEnd').value = ''
-    document.querySelector('#evColor').value = '#ffffff'
-    if (remove){
-      document.querySelector('#evName').removeAttribute('readonly')
-      document.querySelector('#evDsc').removeAttribute('readonly')
-      document.querySelector('#evDay').removeAttribute('disabled')
-      document.querySelector('#evStart').removeAttribute('readonly')
-      document.querySelector('#evEnd').removeAttribute('readonly')
-      document.querySelector('#evColor').removeAttribute('disabled')
+    let inputs = modalInputs()
+    inputs.forEach(i => {
+      if (i.tagName === 'INPUT'){
+        i.value = ''
+        i.removeAttribute('readonly')
+      }
+    })
+    inputs[2].forEach(i => {
+      i.classList.remove('unclickeable')
+      i.classList.remove('radio-button__days__active')
+    })
+    inputs[5].forEach(i => i.classList.remove('unclickeable'))
     }
-  }
   
   // Set events, editbtn and delbtn to have a special class in edit
   if (canEdit || canDelete){
@@ -218,6 +246,16 @@ function App() {
     events.forEach(e => e.classList.remove('active'))
   }
 
+  const arrToDay = (arr) => {
+    let abv = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su']
+    let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+    return console.log(abv.find('W'));
+    // let newArr = arr.map(d => days[abv.findIndex(d)])
+    // Fix this
+    // return newArr
+  }
+
   // Update schedule with localStorage
   useEffect(() => {
     let obj = {
@@ -229,6 +267,8 @@ function App() {
       Saturday: [],
       Sunday: []
     }
+
+
     for (let i=0; i < localStorage.length; i++){
       let item = JSON.parse(localStorage.getItem(localStorage.key(i)))
       let day = item.day
@@ -283,6 +323,22 @@ function App() {
     }
   }
 
+  // Modal day buttons
+  const dayBtnClick = e => {
+    let btn = takeBtnParent(e, 'radio-button')
+    btn.classList.toggle('radio-button__days__active')
+  }
+
+  // Modal color buttons
+  const colorBtnClick = e => {
+    let btn = e.target
+    let colorsBtns = document.querySelectorAll('.radio-button__color')
+    colorsBtns.forEach(cBtn => 
+      cBtn.classList.remove('radio-button__color__active')
+    )
+    btn.classList.toggle('radio-button__color__active')
+  }
+
   return (
     <>
       <div className="App">       
@@ -305,7 +361,7 @@ function App() {
                   schedule['Monday'].map(e => 
                     <Subject
                       handleEventClick={handleEventClick} 
-                      id={e.id}
+                      name={e.id}
                       color={e.color}
                       subject={e.name}
                       subjDsc={e.dsc}
@@ -438,6 +494,8 @@ function App() {
           handleClick={handleClick} 
           handleApproval={handleApproval} 
           closeModal={closeModal}
+          dayBtnClick={dayBtnClick}
+          colorBtnClick={colorBtnClick}
         />
       </div>
     </>
