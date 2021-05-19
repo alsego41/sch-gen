@@ -32,6 +32,7 @@ function App() {
   const handleClick = e => {
     let btnObject = takeBtnParent(e, 'btn')
     if (btnObject.id === 'add-btn'){
+      setAlertAdd(false)
       showModal({
         wrapperClasses: 'add',
         title: 'Add task',
@@ -46,8 +47,10 @@ function App() {
     if (btnObject.id === 'edit-btn'){
       setEdit(!canEdit)
       setDelete(false)
+      setAlertAdd(false)
     }
     if (btnObject.id === 'del-btn'){
+      setAlertAdd(false)
       setDelete(!canDelete)
       setEdit(false)
     }

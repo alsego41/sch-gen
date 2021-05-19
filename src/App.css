@@ -339,6 +339,24 @@ h1 {
   pointer-events: none;
 }
 
+.alert {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+  padding: 0 7vw;
+}
+.alert svg {
+  height: 3.5vw;
+  width: 3.5vw;
+}
+.alert p {
+  padding: 0 3vw;
+  font-size: 3vw;
+  display: inline-block;
+  margin: 0;
+}
+
 @media screen and (min-width: 540px) {
   h1 {
     font-size: 5vw;
@@ -425,7 +443,7 @@ h1 {
     font-size: 1.75vw;
   }
   .modal .btn-modal-wrapper {
-    padding: 1vw 4vw 2vw;
+    padding: 2vw 4vw 2vw;
   }
   .modal .btn-modal-wrapper .cancel p, .modal .btn-modal-wrapper .ok p {
     font-size: 2vw;
@@ -445,6 +463,18 @@ h1 {
   }
   .radio-button p {
     font-size: 1.25vw;
+  }
+
+  .alert {
+    padding: 0 4vw;
+  }
+  .alert svg {
+    height: 2.5vw;
+    width: 2.5vw;
+  }
+  .alert p {
+    padding: 0 1.5vw;
+    font-size: 1.5vw;
   }
 }
 @media screen and (min-width: 1366px) {
@@ -583,6 +613,18 @@ h1 {
     width: 1.75vw;
   }
   .radio-button p {
+    font-size: 1vw;
+  }
+
+  .alert {
+    padding: 0 3vw;
+  }
+  .alert svg {
+    height: 1.35vw;
+    width: 1.35vw;
+  }
+  .alert p {
+    padding: 0 1vw;
     font-size: 1vw;
   }
 }

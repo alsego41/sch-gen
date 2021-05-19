@@ -380,6 +380,26 @@ h1 {
     pointer-events: none;
 }
 
+.alert {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+    padding: 0 7vw;
+
+    svg {
+        height: 3.5vw;
+        width: 3.5vw;
+    }
+
+    p {
+        padding: 0 3vw;
+        font-size: 3vw;
+        display: inline-block;
+        margin: 0;
+    }
+}
+
 @media screen and (min-width: 540px) {
     h1 {
         // font-weight: 800;
@@ -462,7 +482,7 @@ h1 {
             font-size: 1.75vw;
         }
         .btn-modal-wrapper {
-            padding: 1vw 4vw 2vw;
+            padding: 2vw 4vw 2vw;
             .cancel p, .ok p {
                 font-size: 2vw;
                 font-weight: 700;
@@ -481,6 +501,19 @@ h1 {
 
         p {
             font-size: 1.25vw;
+        }
+    }
+    .alert {
+        padding: 0 4vw;
+
+        svg {
+            height: 2.5vw;
+            width: 2.5vw;
+        }
+
+        p {
+            padding: 0 1.5vw;
+            font-size: 1.5vw;
         }
     }
 }
@@ -611,6 +644,19 @@ h1 {
         width: 1.75vw;
 
         p {
+            font-size: 1vw;
+        }
+    }
+    .alert {
+        padding: 0 3vw;
+
+        svg {
+            height: 1.35vw;
+            width: 1.35vw;
+        }
+
+        p {
+            padding: 0 1vw;
             font-size: 1vw;
         }
     }
