@@ -181,7 +181,7 @@ function App() {
     let data = {
       name: inputs[0].value,
       dsc: inputs[1].value,
-      days: arrToDay(days),
+      days: arrToDay(days, 'atd'),
       start: inputs[3].value,
       end: inputs[4].value,
       color: inputs[5].style.backgroundColor,
@@ -221,7 +221,7 @@ function App() {
     inputs[5].forEach(i => i.classList.remove('unclickeable'))
     }
   
-  // Set events, editbtn and delbtn to have a special class in edit
+  // Set events, editbtn and delbtn to have a SPECIAL CLASS (HIGHLIGHTS EVs) in edit
   if (canEdit || canDelete){
     let events = document.querySelectorAll('.subj-wrapper')
     events.forEach(e => e.classList.add('active'))
@@ -252,10 +252,15 @@ function App() {
     events.forEach(e => e.classList.remove('active'))
   }
 
-  const arrToDay = (arr) => {
+  const arrToDay = (arr, way) => {
     let abv = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su']
     let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    let newArr = arr.map(d => days[abv.findIndex(sAbv => sAbv === d)])
+    let newArr = []
+    if (way === 'atd'){
+      newArr = arr.map(d => days[abv.findIndex(sAbv => sAbv === d)])
+    }
+    if (way === 'dta')
+      newArr = arr.map(d => abv[days.findIndex(day => day === d)])
     return newArr
   }
 
@@ -298,15 +303,12 @@ function App() {
   // Click on highlighted events to edit/delete
   const handleEventClick = (e) => {
     let event = takeBtnParent(e, 'subj-wrapper')
+    console.log(event);
+
     if (canEdit || canDelete) {
-      let data = JSON.parse(localStorage.getItem(event.id))
+      let data = JSON.parse(localStorage.getItem(event.dataset.key))
       clearModal(true)
-      document.querySelector('#evName').value = data.name
-      document.querySelector('#evDsc').value = data.dsc
-      document.querySelector('#evDay').value = data.day
-      document.querySelector('#evStart').value = data.start
-      document.querySelector('#evEnd').value = data.end
-      document.querySelector('#evColor').value = data.color
+      fillModal(data)
       if (canEdit){
         showModal({
           wrapperClasses: 'edit',
@@ -324,14 +326,34 @@ function App() {
           text: 'Delete',
           idOkBtn: 'modalDelBtn'
         })
-        document.querySelector('#evName').setAttribute('readonly', true)
-        document.querySelector('#evDsc').setAttribute('readonly', true)
-        document.querySelector('#evDay').setAttribute('disabled', true)
-        document.querySelector('#evStart').setAttribute('readonly', true)
-        document.querySelector('#evEnd').setAttribute('readonly', true)
-        document.querySelector('#evColor').setAttribute('disabled', true)
+        lockModalData()
       } 
     }
+  }
+
+  const fillModal = (data) => {
+    let inputs = modalInputs()
+    let days = arrToDay(data.days, 'dta')
+    inputs[0].value = data.name
+    inputs[1].value = data.dsc
+    days.forEach((day)=> {
+      Array.from(inputs[2]).find(i => i.innerText === day).classList.add('radio-button__days__active')
+    })
+    inputs[3].value = data.start
+    inputs[4].value = data.end
+    Array.from(inputs[5]).find(i => i.style.backgroundColor === data.color).classList.add('radio-button__color__active')
+  }
+
+  const lockModalData = () => {
+    let inputs = modalInputs()
+    inputs.forEach(i => {
+      if (i.tagName === 'INPUT') {
+        console.log(i);
+        i.setAttribute('readonly', true)
+      }
+    })
+    inputs[2].forEach(i => i.classList.add('unclickable'))
+    inputs[5].forEach(i => i.classList.add('unclickable'))
   }
 
   // Modal day buttons
@@ -390,7 +412,7 @@ function App() {
                 schedule['Tuesday'].map(e => 
                   <Subject
                     handleEventClick={handleEventClick} 
-                    id={e.id}
+                    name={e.id}
                     color={e.color}
                     subject={e.name}
                     subjDsc={e.dsc}
@@ -408,7 +430,7 @@ function App() {
                 schedule['Wednesday'].map(e => 
                   <Subject
                     handleEventClick={handleEventClick} 
-                    id={e.id}
+                    name={e.id}
                     color={e.color}
                     subject={e.name}
                     subjDsc={e.dsc}
@@ -426,7 +448,7 @@ function App() {
                 schedule['Thursday'].map(e => 
                   <Subject
                     handleEventClick={handleEventClick} 
-                    id={e.id}
+                    name={e.id}
                     color={e.color}
                     subject={e.name}
                     subjDsc={e.dsc}
@@ -444,7 +466,7 @@ function App() {
                 schedule['Friday'].map(e => 
                   <Subject
                     handleEventClick={handleEventClick} 
-                    id={e.id}
+                    name={e.id}
                     color={e.color}
                     subject={e.name}
                     subjDsc={e.dsc}
@@ -462,7 +484,7 @@ function App() {
                 schedule['Saturday'].map(e => 
                   <Subject
                     handleEventClick={handleEventClick} 
-                    id={e.id}
+                    name={e.id}
                     color={e.color}
                     subject={e.name}
                     subjDsc={e.dsc}
@@ -480,7 +502,7 @@ function App() {
                 schedule['Sunday'].map(e => 
                   <Subject
                     handleEventClick={handleEventClick} 
-                    id={e.id}
+                    name={e.id}
                     color={e.color}
                     subject={e.name}
                     subjDsc={e.dsc}

@@ -12,17 +12,6 @@ const Modal  = (props) => {
                 <label>Description 
                     <input type='text' placeholder='Lift...' id='evDsc' />
                 </label>
-                <label>Day
-                    <select id='evDay'>
-                        <option value='Monday'>Monday</option>
-                        <option value='Tuesday'>Tuesday</option>
-                        <option value='Wednesday'>Wednesday</option>
-                        <option value='Thursday'>Thursday</option>
-                        <option value='Friday'>Friday</option>
-                        <option value='Saturday'>Saturday</option>
-                        <option value='Sunday'>Sunday</option>
-                    </select>
-                </label>
                 <label>Days
                     <div className='radio-button-wrapper radio-button-wrapper__day'>
                         <RadioButton text='M' classRadio='radio-button radio-button__days' radioBtnClick={props.dayBtnClick} />
@@ -39,9 +28,6 @@ const Modal  = (props) => {
                 </label>
                 <label>End
                     <input type='time' required id='evEnd' />
-                </label>
-                <label>Color
-                    <input type='color' id='evColor' />
                 </label>
                 <label>Color
                     <div className='radio-button-wrapper radio-button-wrapper__day'>
