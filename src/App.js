@@ -124,7 +124,6 @@ function App() {
     }
     else {
       setAlertAdd(true)
-      console.log('Completion required');
       return false
     }
   }
@@ -502,6 +501,7 @@ function App() {
           closeModal={closeModal}
           dayBtnClick={dayBtnClick}
           colorBtnClick={colorBtnClick}
+          incomplete={alertAdd}
         />
       </div>
     </>

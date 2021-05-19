@@ -40,6 +40,7 @@ const Modal  = (props) => {
                         <RadioButton color='rgb(153, 33, 252)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
                     </div>
                 </label>
+                <p className={props.incomplete ? 'alert' : 'invisible'}>One or more fields are incomplete.</p>
                 <div className='btn-modal-wrapper'>
                     <Button type='btn cancel' text='Cancel' handleClick={props.closeModal} />
                     <Button type='btn ok' text={props.text} handleClick={props.handleApproval} id={props.idOkBtn} />
