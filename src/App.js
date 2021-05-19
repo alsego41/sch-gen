@@ -26,6 +26,7 @@ function App() {
   const [ update, setUpdate ] = useState(false)
   const [ canEdit, setEdit ] = useState(false)
   const [ canDelete, setDelete ] = useState(false)
+  const [ alertAdd, setAlertAdd ] = useState(false)
 
   // Handle main button clicks
   const handleClick = e => {
@@ -76,18 +77,20 @@ function App() {
     let btnObject = takeBtnParent(e, 'btn')
     if (btnObject.id === 'modalAddBtn'){
       addTask()
+      if (alertAdd) closeModal()
     }
     if (btnObject.id === 'modalEditBtn'){
       if (addTask()){
         setEdit(false)
       }
+      closeModal()
     }
     if (btnObject.id === 'modalDelBtn'){
       removeLastKeyStored('del')
       setDelete(false)
       setUpdate(!update)
+      closeModal()
     }
-    closeModal()
   }
 
   // Remove localStorage key of an event being edited, so the edited is re-created.
@@ -110,6 +113,7 @@ function App() {
   const addTask = () => {
     let task = getDataFromModal()
     if (checkCompletion(task)){
+      setAlertAdd(false)
       storeTask(task)
       if (canEdit){
         removeLastKeyStored('edit')
@@ -120,6 +124,7 @@ function App() {
       return true
     }
     else {
+      setAlertAdd(true)
       console.log('Completion required');
       return false
     }
@@ -169,20 +174,21 @@ function App() {
 
     let inputs = modalInputs()
     inputs[2] = Array.from(inputs[2]).filter(i => i.classList.contains('radio-button__days__active'))
+    let days = inputs[2].map(i => i.innerText)
     inputs[5] = Array.from(inputs[5]).filter(i => i.classList.contains('radio-button__color__active'))[0]
     // console.log(inputs);
 
     let data = {
       name: inputs[0].value,
       dsc: inputs[1].value,
-      days: inputs[2].map(i => i.innerText),
+      days: arrToDay(days),
       start: inputs[3].value,
       end: inputs[4].value,
       color: inputs[5].style.backgroundColor,
     }
-    // console.log(data);
+    console.log(data);
 
-    console.log(arrToDay(data.days));
+    // console.log(arrToDay(data.days));
     return data
   }
 
@@ -249,11 +255,8 @@ function App() {
   const arrToDay = (arr) => {
     let abv = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su']
     let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-
-    return console.log(abv.find('W'));
-    // let newArr = arr.map(d => days[abv.findIndex(d)])
-    // Fix this
-    // return newArr
+    let newArr = arr.map(d => days[abv.findIndex(sAbv => sAbv === d)])
+    return newArr
   }
 
   // Update schedule with localStorage
@@ -267,19 +270,27 @@ function App() {
       Saturday: [],
       Sunday: []
     }
-
-
     for (let i=0; i < localStorage.length; i++){
       let item = JSON.parse(localStorage.getItem(localStorage.key(i)))
-      let day = item.day
-      obj[day][obj[day].length] = {
-        id: localStorage.key(i),
-        name: item.name,
-        dsc: item.dsc,
-        start: item.start,
-        end: item.end,
-        color: item.color
-      }
+      item.days.forEach((day)=> {
+        obj[day][obj[day].length] = {
+          id: localStorage.key(i),
+          name: item.name,
+          dsc: item.dsc,
+          start: item.start,
+          end: item.end,
+          color: item.color
+        }
+      })
+      // let day = item.day
+      // obj[day][obj[day].length] = {
+      //   id: localStorage.key(i),
+      //   name: item.name,
+      //   dsc: item.dsc,
+      //   start: item.start,
+      //   end: item.end,
+      //   color: item.color
+      // }
     }
     setSchedule(obj)
   }, [update])
