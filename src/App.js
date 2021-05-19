@@ -39,7 +39,7 @@ function App() {
         text: 'Add',
         idOkBtn: 'modalAddBtn'
       })
-      clearModal(true)
+      clearModal()
       setEdit(false)
       setDelete(false)
     }
@@ -77,13 +77,11 @@ function App() {
     let btnObject = takeBtnParent(e, 'btn')
     if (btnObject.id === 'modalAddBtn'){
       addTask()
-      if (alertAdd) closeModal()
     }
     if (btnObject.id === 'modalEditBtn'){
       if (addTask()){
         setEdit(false)
       }
-      closeModal()
     }
     if (btnObject.id === 'modalDelBtn'){
       removeLastKeyStored('del')
@@ -118,9 +116,10 @@ function App() {
       if (canEdit){
         removeLastKeyStored('edit')
       }
-      clearModal(true)
+      clearModal()
       setUpdate(!update)
       setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
+      closeModal()
       return true
     }
     else {
@@ -158,37 +157,19 @@ function App() {
   }
 
   const getDataFromModal = () => {
-    // let dBtns = document.querySelectorAll('.radio-button__days__active')
-    // let days = []
-    // dBtns.forEach(dB => days.push(dB.innerText));
-    // let color = document.querySelector('.radio-button__color__active')
-    // // console.log(days);
-    // let data2 = {
-    //   name: document.querySelector('#evName').value,
-    //   dsc: document.querySelector('#evDsc').value,
-    //   start: document.querySelector('#evStart').value,
-    //   end: document.querySelector('#evEnd').value,
-    //   color: color.style.backgroundColor,
-    //   day: document.querySelector('#evDay').value
-    // }
-
     let inputs = modalInputs()
     inputs[2] = Array.from(inputs[2]).filter(i => i.classList.contains('radio-button__days__active'))
     let days = inputs[2].map(i => i.innerText)
-    inputs[5] = Array.from(inputs[5]).filter(i => i.classList.contains('radio-button__color__active'))[0]
-    // console.log(inputs);
-
+    let color = Array.from(inputs[5]).filter(i => i.classList.contains('radio-button__color__active'))[0]
+    color = color ?? inputs[5][4]
     let data = {
       name: inputs[0].value,
       dsc: inputs[1].value,
       days: arrToDay(days, 'atd'),
       start: inputs[3].value,
       end: inputs[4].value,
-      color: inputs[5].style.backgroundColor,
+      color: color.style.backgroundColor,
     }
-    console.log(data);
-
-    // console.log(arrToDay(data.days));
     return data
   }
 
@@ -203,10 +184,8 @@ function App() {
     return inputs
   }
 
-  // console.log(modalInputs());
-
   // Empty the modal and remove readonly attrs
-  const clearModal = (remove) => {
+  const clearModal = () => {
     let inputs = modalInputs()
     inputs.forEach(i => {
       if (i.tagName === 'INPUT'){
@@ -215,11 +194,14 @@ function App() {
       }
     })
     inputs[2].forEach(i => {
-      i.classList.remove('unclickeable')
+      i.classList.remove('unclickable')
       i.classList.remove('radio-button__days__active')
     })
-    inputs[5].forEach(i => i.classList.remove('unclickeable'))
-    }
+    inputs[5].forEach(i => {
+      i.classList.remove('unclickable')
+      i.classList.remove('radio-button__color__active')
+    })
+  }
   
   // Set events, editbtn and delbtn to have a SPECIAL CLASS (HIGHLIGHTS EVs) in edit
   if (canEdit || canDelete){
@@ -252,6 +234,7 @@ function App() {
     events.forEach(e => e.classList.remove('active'))
   }
 
+  // Convert days object to array and viceversa
   const arrToDay = (arr, way) => {
     let abv = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su']
     let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -264,7 +247,7 @@ function App() {
     return newArr
   }
 
-  // Update schedule with localStorage
+  // Update schedule state with localStorage data
   useEffect(() => {
     let obj = {
       Monday: [],
@@ -287,15 +270,6 @@ function App() {
           color: item.color
         }
       })
-      // let day = item.day
-      // obj[day][obj[day].length] = {
-      //   id: localStorage.key(i),
-      //   name: item.name,
-      //   dsc: item.dsc,
-      //   start: item.start,
-      //   end: item.end,
-      //   color: item.color
-      // }
     }
     setSchedule(obj)
   }, [update])
@@ -303,17 +277,15 @@ function App() {
   // Click on highlighted events to edit/delete
   const handleEventClick = (e) => {
     let event = takeBtnParent(e, 'subj-wrapper')
-    console.log(event);
-
     if (canEdit || canDelete) {
       let data = JSON.parse(localStorage.getItem(event.dataset.key))
-      clearModal(true)
+      clearModal()
       fillModal(data)
       if (canEdit){
         showModal({
           wrapperClasses: 'edit',
           title: 'Edit task',
-          modalClasses: `edit ${event.id}`,
+          modalClasses: `edit ${event.dataset.key}`,
           text: 'Edit',
           idOkBtn: 'modalEditBtn'
         })
@@ -322,7 +294,7 @@ function App() {
         showModal({
           wrapperClasses: 'del',
           title: 'Delete task',
-          modalClasses: `del ${event.id}`,
+          modalClasses: `del ${event.dataset.key}`,
           text: 'Delete',
           idOkBtn: 'modalDelBtn'
         })
@@ -331,6 +303,7 @@ function App() {
     }
   }
 
+  // Fill modal inputs with data recieved
   const fillModal = (data) => {
     let inputs = modalInputs()
     let days = arrToDay(data.days, 'dta')
@@ -344,11 +317,11 @@ function App() {
     Array.from(inputs[5]).find(i => i.style.backgroundColor === data.color).classList.add('radio-button__color__active')
   }
 
+  // Lock all inputs in modal, so user can't interact with them
   const lockModalData = () => {
     let inputs = modalInputs()
     inputs.forEach(i => {
       if (i.tagName === 'INPUT') {
-        console.log(i);
         i.setAttribute('readonly', true)
       }
     })
@@ -356,13 +329,13 @@ function App() {
     inputs[5].forEach(i => i.classList.add('unclickable'))
   }
 
-  // Modal day buttons
+  // Modal day buttons interactions
   const dayBtnClick = e => {
     let btn = takeBtnParent(e, 'radio-button')
     btn.classList.toggle('radio-button__days__active')
   }
 
-  // Modal color buttons
+  // Modal color buttons interactions
   const colorBtnClick = e => {
     let btn = e.target
     let colorsBtns = document.querySelectorAll('.radio-button__color')
