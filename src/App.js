@@ -28,6 +28,8 @@ function App() {
   const [ canDelete, setDelete ] = useState(false)
   const [ alertAdd, setAlertAdd ] = useState(false)
 
+  const version = '1.0'
+
   // Handle main button clicks
   const handleClick = e => {
     let btnObject = takeBtnParent(e, 'btn')
@@ -171,6 +173,7 @@ function App() {
       start: inputs[3].value,
       end: inputs[4].value,
       color: color.style.backgroundColor,
+      version
     }
     return data
   }
@@ -249,8 +252,18 @@ function App() {
     return newArr
   }
 
+  const removeUnusableData = () => {
+    for (let i = 0; i < localStorage.length; i++){
+      let keyD = JSON.parse(localStorage.getItem(localStorage.key(i)))
+      if (!keyD.hasOwnProperty('version') || keyD.version !== version) {
+        localStorage.removeItem(localStorage.key(i))
+      }
+    }
+  }
+
   // Update schedule state with localStorage data
   useEffect(() => {
+    removeUnusableData()
     let obj = {
       Monday: [],
       Tuesday: [],
