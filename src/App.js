@@ -261,6 +261,26 @@ function App() {
     }
   }
 
+  const sortByTime = (dayTasks) => {
+    Object.keys(dayTasks).forEach(day => {
+      let dayAux = []
+      if (dayTasks[day].length > 1){
+        dayTasks[day].forEach(ev => {
+          ev.start = ev.start.replace(':','')
+          dayAux.push(ev);
+        })
+        dayAux.sort((a,b) => {
+          return a.start - b.start
+        })
+        dayAux.forEach(day => {
+          let aux = day.start.slice(2)
+          day.start = day.start.slice(0,2).concat(':',aux)
+        })
+        dayTasks[day] = dayAux
+      }
+    })
+  }
+
   // Update schedule state with localStorage data
   useEffect(() => {
     removeUnusableData()
@@ -273,6 +293,7 @@ function App() {
       Saturday: [],
       Sunday: []
     }
+    // Need for a 'priority' sorting, altho more like sorted by start time
     for (let i=0; i < localStorage.length; i++){
       let item = JSON.parse(localStorage.getItem(localStorage.key(i)))
       item.days.forEach((day)=> {
@@ -286,6 +307,7 @@ function App() {
         }
       })
     }
+    sortByTime(obj)
     setSchedule(obj)
   }, [update])
 
