@@ -31,13 +31,13 @@ const Modal  = (props) => {
                 </label>
                 <label>Color
                     <div className='radio-button-wrapper radio-button-wrapper__day'>
-                        <RadioButton color='rgb(255, 30, 0)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
+                        <RadioButton color='rgb(255, 87, 87)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
                         <RadioButton color='rgb(255, 184, 53)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
                         <RadioButton color='rgb(252, 248, 33)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
                         <RadioButton color='rgb(33, 252, 150)' classRadio='radio-button radio-button__color radio-button__color__active' radioBtnClick={props.colorBtnClick} />
                         <RadioButton color='rgb(33, 237, 252)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
-                        <RadioButton color='rgb(33, 121, 252)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
-                        <RadioButton color='rgb(153, 33, 252)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
+                        <RadioButton color='rgb(169, 186, 199)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
+                        <RadioButton color='rgb(255, 122, 206)' classRadio='radio-button radio-button__color' radioBtnClick={props.colorBtnClick} />
                     </div>
                 </label>
                 <div className={props.incomplete ? 'alert' : 'invisible'}>
