@@ -260,7 +260,7 @@ function App() {
   const removeUnusableData = () => {
     for (let i = 0; i < localStorage.length; i++){
       let keyD = JSON.parse(localStorage.getItem(localStorage.key(i)))
-      if (!keyD.hasOwnProperty('version') || keyD.version !== version) {
+      if (!('version' in keyD) || keyD.version !== version) {
         localStorage.removeItem(localStorage.key(i))
       }
     }
