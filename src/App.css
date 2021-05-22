@@ -58,7 +58,7 @@ h1 {
   opacity: 0.7;
 }
 .btn.active.del {
-  background-color: #f54235;
+  background-color: #ff5757;
   cursor: pointer;
 }
 .btn.active.del p, .btn.active.del .btn-icon {
@@ -77,7 +77,7 @@ h1 {
   cursor: pointer;
 }
 .btn:hover.add {
-  background-color: #3bd492;
+  background-color: #21fc96;
   cursor: pointer;
 }
 .btn:hover.add p, .btn:hover.add .btn-icon {
@@ -85,7 +85,7 @@ h1 {
   opacity: 0.7;
 }
 .btn:hover.edit {
-  background-color: #2dc3db;
+  background-color: #21edfc;
   cursor: pointer;
 }
 .btn:hover.edit p, .btn:hover.edit .btn-icon {
@@ -93,7 +93,7 @@ h1 {
   opacity: 0.7;
 }
 .btn:hover.del {
-  background-color: #f54235;
+  background-color: #ff5757;
   cursor: pointer;
 }
 .btn:hover.del p, .btn:hover.del .btn-icon {
@@ -263,7 +263,7 @@ h1 {
   gap: 2.5vw;
 }
 .modal .btn-modal-wrapper .cancel {
-  background-color: #f54235;
+  background-color: #ff5757;
 }
 .modal .btn-modal-wrapper .ok {
   background-color: #3bd492;
@@ -283,11 +283,11 @@ h1 {
   color: #2dc3db;
 }
 .modal.del {
-  background-color: #f54235;
+  background-color: #ff5757;
 }
 .modal.del .radio-button__days__active,
 .modal.del .radio-button__days:hover {
-  color: #f54235;
+  color: #ff5757;
 }
 
 .invisible {
@@ -361,7 +361,7 @@ h1 {
 }
 
 #evEnd:invalid {
-  border-color: #f54235;
+  border-color: #ff5757;
   color: red;
   background-color: rgba(255, 0, 0, 0.35);
 }

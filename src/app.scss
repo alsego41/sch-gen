@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-$red: rgb(245, 66, 53);
+$red: rgb(255, 87, 87);
 $green: rgb(59, 212, 146);
 $blue: rgb(45, 195, 219);
 
@@ -99,14 +99,14 @@ h1 {
 
     &:hover {
         &.add {
-            background-color: $green;
+            background-color: rgb(33, 252, 150);
             cursor: pointer;
             p, .btn-icon {
                 @include textOpac();
             }
         }
         &.edit{
-            background-color: $blue;
+            background-color: rgb(33, 237, 252);
             cursor: pointer;
             p, .btn-icon {
                 @include textOpac();
