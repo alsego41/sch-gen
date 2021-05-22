@@ -26,35 +26,55 @@ function App() {
   const [ update, setUpdate ] = useState(false)
   const [ canEdit, setEdit ] = useState(false)
   const [ canDelete, setDelete ] = useState(false)
+  const [ alertAdd, setAlertAdd ] = useState(false)
+
+  const version = '1.0'
 
   // Handle main button clicks
   const handleClick = e => {
     let btnObject = takeBtnParent(e, 'btn')
     if (btnObject.id === 'add-btn'){
-      setModalConfig({
+      setAlertAdd(false)
+      showModal({
         wrapperClasses: 'add',
         title: 'Add task',
         modalClasses: 'add',
         text: 'Add',
         idOkBtn: 'modalAddBtn'
       })
-      clearModal(true)
+      clearModal()
       setEdit(false)
       setDelete(false)
     }
     if (btnObject.id === 'edit-btn'){
       setEdit(!canEdit)
       setDelete(false)
+      setAlertAdd(false)
     }
     if (btnObject.id === 'del-btn'){
+      setAlertAdd(false)
       setDelete(!canDelete)
       setEdit(false)
     }
-    if (btnObject.classList.contains('cancel')){
-      setEdit(false)
-      setDelete(false)
-      setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
-    }
+  }
+
+  // Activate modal
+  const showModal = (props) => {
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    setModalConfig(props)
+  }
+
+  // De-activate modal
+  const closeModal = () => {
+    const scrollY = Number(document.body.style.top.slice(1, -2))
+    document.body.style.position = ''
+    document.body.style.top = ''
+    window.scrollTo(0, scrollY)
+    setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
+    setEdit(false)
+    setDelete(false)
   }
 
   // Handle modal approval buttons
@@ -70,9 +90,9 @@ function App() {
     }
     if (btnObject.id === 'modalDelBtn'){
       removeLastKeyStored('del')
-      setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
       setDelete(false)
       setUpdate(!update)
+      closeModal()
     }
   }
 
@@ -96,17 +116,19 @@ function App() {
   const addTask = () => {
     let task = getDataFromModal()
     if (checkCompletion(task)){
+      setAlertAdd(false)
       storeTask(task)
       if (canEdit){
         removeLastKeyStored('edit')
       }
-      clearModal(true)
+      clearModal()
       setUpdate(!update)
       setModalConfig({...modalConfig, wrapperClasses: 'invisible'})
+      closeModal()
       return true
     }
     else {
-      console.log('Completion required');
+      setAlertAdd(true)
       return false
     }
   }
@@ -114,19 +136,18 @@ function App() {
   // Check Completion of modal form
   const checkCompletion = task => {
     let values = Object.values(task)
-    let empty = values.filter(input => input === '').length
+    let empty = values.filter(value => value === '' && typeof value === 'string').length
+    let times = []
+    times.push(task.start)
+    times.push(task.end)
+    times = times.map(time => time.replace(':',''))
+    if (times[0] > times[1]) return false
+    if (task.days.length === 0) ++empty 
+    if (empty === 0) return true
+    if (empty > 1) return false
     if (empty === 1){
-      if (task.dsc === ''){
-        return true
-      }
-      else {
-        return false
-      }
-    } 
-    else if (empty > 1) {
-      return false
-    } else if (empty === 0){
-      return true
+      if (task.dsc === '') return true
+      else return false
     }
   }
 
@@ -145,35 +166,54 @@ function App() {
   }
 
   const getDataFromModal = () => {
+    let inputs = modalInputs()
+    inputs[2] = Array.from(inputs[2]).filter(i => i.classList.contains('radio-button__days__active'))
+    let days = inputs[2].map(i => i.innerText)
+    let color = Array.from(inputs[5]).filter(i => i.classList.contains('radio-button__color__active'))[0]
+    color = color ?? inputs[5][4]
     let data = {
-      name: document.querySelector('#evName').value,
-      dsc: document.querySelector('#evDsc').value,
-      start: document.querySelector('#evStart').value,
-      end: document.querySelector('#evEnd').value,
-      color: document.querySelector('#evColor').value,
-      day: document.querySelector('#evDay').value
+      name: inputs[0].value,
+      dsc: inputs[1].value,
+      days: arrToDay(days, 'atd'),
+      start: inputs[3].value,
+      end: inputs[4].value,
+      color: color.style.backgroundColor,
+      version
     }
     return data
   }
 
+  const modalInputs = () => {
+    let inputs = []
+    inputs.push(document.querySelector('#evName'))
+    inputs.push(document.querySelector('#evDsc'))
+    inputs.push(document.querySelectorAll('.radio-button__days'))
+    inputs.push(document.querySelector('#evStart'))
+    inputs.push(document.querySelector('#evEnd'))
+    inputs.push(document.querySelectorAll('.radio-button__color'))
+    return inputs
+  }
+
   // Empty the modal and remove readonly attrs
-  const clearModal = (remove) => {
-    document.querySelector('#evName').value = ''
-    document.querySelector('#evDsc').value = ''
-    document.querySelector('#evStart').value = ''
-    document.querySelector('#evEnd').value = ''
-    document.querySelector('#evColor').value = '#ffffff'
-    if (remove){
-      document.querySelector('#evName').removeAttribute('readonly')
-      document.querySelector('#evDsc').removeAttribute('readonly')
-      document.querySelector('#evDay').removeAttribute('disabled')
-      document.querySelector('#evStart').removeAttribute('readonly')
-      document.querySelector('#evEnd').removeAttribute('readonly')
-      document.querySelector('#evColor').removeAttribute('disabled')
-    }
+  const clearModal = () => {
+    let inputs = modalInputs()
+    inputs.forEach(i => {
+      if (i.tagName === 'INPUT'){
+        i.value = ''
+        i.removeAttribute('readonly')
+      }
+    })
+    inputs[2].forEach(i => {
+      i.classList.remove('unclickable')
+      i.classList.remove('radio-button__days__active')
+    })
+    inputs[5].forEach(i => {
+      i.classList.remove('unclickable')
+      i.classList.remove('radio-button__color__active')
+    })
   }
   
-  // Set events, editbtn and delbtn to have a special class in edit
+  // Set events, editbtn and delbtn to have a SPECIAL CLASS (HIGHLIGHTS EVs) in edit
   if (canEdit || canDelete){
     let events = document.querySelectorAll('.subj-wrapper')
     events.forEach(e => e.classList.add('active'))
@@ -204,8 +244,51 @@ function App() {
     events.forEach(e => e.classList.remove('active'))
   }
 
-  // Update schedule with localStorage
+  // Convert days object to array and viceversa
+  const arrToDay = (arr, way) => {
+    let abv = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su']
+    let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    let newArr = []
+    if (way === 'atd'){
+      newArr = arr.map(d => days[abv.findIndex(sAbv => sAbv === d)])
+    }
+    if (way === 'dta')
+      newArr = arr.map(d => abv[days.findIndex(day => day === d)])
+    return newArr
+  }
+
+  const removeUnusableData = () => {
+    for (let i = 0; i < localStorage.length; i++){
+      let keyD = JSON.parse(localStorage.getItem(localStorage.key(i)))
+      if (!('version' in keyD) || keyD.version !== version) {
+        localStorage.removeItem(localStorage.key(i))
+      }
+    }
+  }
+
+  const sortByTime = (dayTasks) => {
+    Object.keys(dayTasks).forEach(day => {
+      let dayAux = []
+      if (dayTasks[day].length > 1){
+        dayTasks[day].forEach(ev => {
+          ev.start = ev.start.replace(':','')
+          dayAux.push(ev);
+        })
+        dayAux.sort((a,b) => {
+          return a.start - b.start
+        })
+        dayAux.forEach(day => {
+          let aux = day.start.slice(2)
+          day.start = day.start.slice(0,2).concat(':',aux)
+        })
+        dayTasks[day] = dayAux
+      }
+    })
+  }
+
+  // Update schedule state with localStorage data
   useEffect(() => {
+    removeUnusableData()
     let obj = {
       Monday: [],
       Tuesday: [],
@@ -215,18 +298,21 @@ function App() {
       Saturday: [],
       Sunday: []
     }
+    // Need for a 'priority' sorting, altho more like sorted by start time
     for (let i=0; i < localStorage.length; i++){
       let item = JSON.parse(localStorage.getItem(localStorage.key(i)))
-      let day = item.day
-      obj[day][obj[day].length] = {
-        id: localStorage.key(i),
-        name: item.name,
-        dsc: item.dsc,
-        start: item.start,
-        end: item.end,
-        color: item.color
-      }
+      item.days.forEach((day)=> {
+        obj[day][obj[day].length] = {
+          id: localStorage.key(i),
+          name: item.name,
+          dsc: item.dsc,
+          start: item.start,
+          end: item.end,
+          color: item.color
+        }
+      })
     }
+    sortByTime(obj)
     setSchedule(obj)
   }, [update])
 
@@ -234,68 +320,119 @@ function App() {
   const handleEventClick = (e) => {
     let event = takeBtnParent(e, 'subj-wrapper')
     if (canEdit || canDelete) {
-      let data = JSON.parse(localStorage.getItem(event.id))
-      clearModal(true)
-      document.querySelector('#evName').value = data.name
-      document.querySelector('#evDsc').value = data.dsc
-      document.querySelector('#evDay').value = data.day
-      document.querySelector('#evStart').value = data.start
-      document.querySelector('#evEnd').value = data.end
-      document.querySelector('#evColor').value = data.color
+      let data = JSON.parse(localStorage.getItem(event.dataset.key))
+      clearModal()
+      fillModal(data)
       if (canEdit){
-        setModalConfig({
+        showModal({
           wrapperClasses: 'edit',
           title: 'Edit task',
-          modalClasses: `edit ${event.id}`,
+          modalClasses: `edit ${event.dataset.key}`,
           text: 'Edit',
           idOkBtn: 'modalEditBtn'
         })
       }
       else if (canDelete) {
-        setModalConfig({
+        showModal({
           wrapperClasses: 'del',
           title: 'Delete task',
-          modalClasses: `del ${event.id}`,
+          modalClasses: `del ${event.dataset.key}`,
           text: 'Delete',
           idOkBtn: 'modalDelBtn'
         })
-        document.querySelector('#evName').setAttribute('readonly', true)
-        document.querySelector('#evDsc').setAttribute('readonly', true)
-        document.querySelector('#evDay').setAttribute('disabled', true)
-        document.querySelector('#evStart').setAttribute('readonly', true)
-        document.querySelector('#evEnd').setAttribute('readonly', true)
-        document.querySelector('#evColor').setAttribute('disabled', true)
+        lockModalData()
       } 
     }
   }
 
+  // Fill modal inputs with data recieved
+  const fillModal = (data) => {
+    let inputs = modalInputs()
+    let days = arrToDay(data.days, 'dta')
+    inputs[0].value = data.name
+    inputs[1].value = data.dsc
+    days.forEach((day)=> {
+      Array.from(inputs[2]).find(i => i.innerText === day).classList.add('radio-button__days__active')
+    })
+    inputs[3].value = data.start
+    inputs[4].value = data.end
+    Array.from(inputs[5]).find(i => i.style.backgroundColor === data.color).classList.add('radio-button__color__active')
+  }
+
+  // Lock all inputs in modal, so user can't interact with them
+  const lockModalData = () => {
+    let inputs = modalInputs()
+    inputs.forEach(i => {
+      if (i.tagName === 'INPUT') {
+        i.setAttribute('readonly', true)
+      }
+    })
+    inputs[2].forEach(i => i.classList.add('unclickable'))
+    inputs[5].forEach(i => i.classList.add('unclickable'))
+  }
+
+  // Modal day buttons interactions
+  const dayBtnClick = e => {
+    let btn = takeBtnParent(e, 'radio-button')
+    btn.classList.toggle('radio-button__days__active')
+  }
+
+  // Modal color buttons interactions
+  const colorBtnClick = e => {
+    let btn = e.target
+    let colorsBtns = document.querySelectorAll('.radio-button__color')
+    colorsBtns.forEach(cBtn => 
+      cBtn.classList.remove('radio-button__color__active')
+    )
+    btn.classList.toggle('radio-button__color__active')
+  }
+
+  const adjustEndTime = e => {
+    let endTimeInput = document.querySelector('#evEnd')
+    endTimeInput.setAttribute('min', e.target.value)
+  }
+
   return (
-    <div className="App">
-      <div id='modal-wrapper' className={modalConfig.wrapperClasses}>
-        <Modal modalType={modalConfig.title} modalClass={modalConfig.modalClasses} id={'modal-wrapper-' + modalConfig.wrapperClasses}
-          handleClick={handleClick} text={modalConfig.text} handleApproval={handleApproval} idOkBtn={modalConfig.idOkBtn}
-        />
-      </div>
-      <h1>Schedule Generator</h1>
-      <div id='btn-wrapper'>
-        <Button handleClick={handleClick} text='Add task' id='add-btn' 
-          type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' 
-        />
-        <Button handleClick={handleClick} text='Edit task' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
-        <Button handleClick={handleClick} text='Delete task' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
-      </div>
-      <div id='days-wrapper'>
-        <div className='days' id='sch-hours'>
-          <p>Hours</p>
+    <>
+      <div className="App">       
+        <h1>Schedule Generator</h1>
+        <div id='btn-wrapper'>
+          <Button handleClick={handleClick} text='Add task' id='add-btn' 
+            type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' 
+          />
+          <Button handleClick={handleClick} text='Edit task' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
+          <Button handleClick={handleClick} text='Delete task' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
         </div>
-        <div id='mon' className='days'>
-          <p>Monday</p>
-          <div className='subj-container'>
-            {schedule['Monday'].length > 0 ? 
-                schedule['Monday'].map(e => 
+        <div id='days-wrapper'>
+          <div className='days' id='sch-hours'>
+            <p>Hours</p>
+          </div>
+          <div id='mon' className='days'>
+            <p>Monday</p>
+            <div className='subj-container'>
+              {schedule['Monday'].length > 0 ? 
+                  schedule['Monday'].map(e => 
+                    <Subject
+                      handleEventClick={handleEventClick} 
+                      name={e.id}
+                      color={e.color}
+                      subject={e.name}
+                      subjDsc={e.dsc}
+                      timeStart={e.start}
+                      timeEnd={e.end}
+                    />
+                  ) : <></> 
+              }
+            </div>
+          </div>
+          <div id='tue' className='days'>
+            <p>Tuesday</p>
+            <div className='subj-container'>
+              {schedule['Tuesday'].length > 0 ? 
+                schedule['Tuesday'].map(e => 
                   <Subject
                     handleEventClick={handleEventClick} 
-                    id={e.id}
+                    name={e.id}
                     color={e.color}
                     subject={e.name}
                     subjDsc={e.dsc}
@@ -303,119 +440,120 @@ function App() {
                     timeEnd={e.end}
                   />
                 ) : <></> 
-            }
+              }
+            </div>
           </div>
-        </div>
-        <div id='tue' className='days'>
-          <p>Tuesday</p>
-          <div className='subj-container'>
-            {schedule['Tuesday'].length > 0 ? 
-              schedule['Tuesday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
+          <div id='wed' className='days'>
+            <p>Wednesday</p>
+            <div className='subj-container'>
+              {schedule['Wednesday'].length > 0 ? 
+                schedule['Wednesday'].map(e => 
+                  <Subject
+                    handleEventClick={handleEventClick} 
+                    name={e.id}
+                    color={e.color}
+                    subject={e.name}
+                    subjDsc={e.dsc}
+                    timeStart={e.start}
+                    timeEnd={e.end}
+                  />
+                ) : <></> 
+              }
+            </div>
           </div>
-        </div>
-        <div id='wed' className='days'>
-          <p>Wednesday</p>
-          <div className='subj-container'>
-            {schedule['Wednesday'].length > 0 ? 
-              schedule['Wednesday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
+          <div id='thu' className='days'>
+            <p>Thursday</p>
+            <div className='subj-container'>
+              {schedule['Thursday'].length > 0 ? 
+                schedule['Thursday'].map(e => 
+                  <Subject
+                    handleEventClick={handleEventClick} 
+                    name={e.id}
+                    color={e.color}
+                    subject={e.name}
+                    subjDsc={e.dsc}
+                    timeStart={e.start}
+                    timeEnd={e.end}
+                  />
+                ) : <></> 
+              }
+            </div>
           </div>
-        </div>
-        <div id='thu' className='days'>
-          <p>Thursday</p>
-          <div className='subj-container'>
-            {schedule['Thursday'].length > 0 ? 
-              schedule['Thursday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
+          <div id='fri' className='days'>
+            <p>Friday</p>
+            <div className='subj-container'>
+              {schedule['Friday'].length > 0 ? 
+                schedule['Friday'].map(e => 
+                  <Subject
+                    handleEventClick={handleEventClick} 
+                    name={e.id}
+                    color={e.color}
+                    subject={e.name}
+                    subjDsc={e.dsc}
+                    timeStart={e.start}
+                    timeEnd={e.end}
+                  />
+                ) : <></> 
+              }
+            </div>
           </div>
-        </div>
-        <div id='fri' className='days'>
-          <p>Friday</p>
-          <div className='subj-container'>
-            {schedule['Friday'].length > 0 ? 
-              schedule['Friday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
+          <div id='sat' className='days'>
+            <p>Saturday</p>
+            <div className='subj-container'>
+              {schedule['Saturday'].length > 0 ? 
+                schedule['Saturday'].map(e => 
+                  <Subject
+                    handleEventClick={handleEventClick} 
+                    name={e.id}
+                    color={e.color}
+                    subject={e.name}
+                    subjDsc={e.dsc}
+                    timeStart={e.start}
+                    timeEnd={e.end}
+                  />
+                ) : <></> 
+              }
+            </div>
           </div>
-        </div>
-        <div id='sat' className='days'>
-          <p>Saturday</p>
-          <div className='subj-container'>
-            {schedule['Saturday'].length > 0 ? 
-              schedule['Saturday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
-          </div>
-        </div>
-        <div id='sun' className='days'>
-          <p>Sunday</p>
-          <div className='subj-container'>
-            {schedule['Sunday'].length > 0 ? 
-              schedule['Sunday'].map(e => 
-                <Subject
-                  handleEventClick={handleEventClick} 
-                  id={e.id}
-                  color={e.color}
-                  subject={e.name}
-                  subjDsc={e.dsc}
-                  timeStart={e.start}
-                  timeEnd={e.end}
-                />
-              ) : <></> 
-            }
+          <div id='sun' className='days'>
+            <p>Sunday</p>
+            <div className='subj-container'>
+              {schedule['Sunday'].length > 0 ? 
+                schedule['Sunday'].map(e => 
+                  <Subject
+                    handleEventClick={handleEventClick} 
+                    name={e.id}
+                    color={e.color}
+                    subject={e.name}
+                    subjDsc={e.dsc}
+                    timeStart={e.start}
+                    timeEnd={e.end}
+                  />
+                ) : <></> 
+              }
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div 
+        id='modal-wrapper' 
+        className={modalConfig.wrapperClasses}>
+        <Modal 
+          modalType={modalConfig.title} 
+          modalClass={modalConfig.modalClasses} 
+          id={'modal-wrapper-' + modalConfig.wrapperClasses}
+          idOkBtn={modalConfig.idOkBtn}
+          text={modalConfig.text} 
+          handleClick={handleClick} 
+          handleApproval={handleApproval} 
+          closeModal={closeModal}
+          dayBtnClick={dayBtnClick}
+          colorBtnClick={colorBtnClick}
+          incomplete={alertAdd}
+          adjustEndTime={adjustEndTime}
+        />
+      </div>
+    </>
   );
 }
 
