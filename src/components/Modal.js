@@ -24,7 +24,7 @@ const Modal  = (props) => {
                     </div>
                 </label>
                 <label>Start
-                    <input type='time' required id='evStart'/>
+                    <input type='time' required id='evStart' onChange={props.adjustEndTime}/>
                 </label>
                 <label>End
                     <input type='time' required id='evEnd' />

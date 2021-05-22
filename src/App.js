@@ -137,6 +137,11 @@ function App() {
   const checkCompletion = task => {
     let values = Object.values(task)
     let empty = values.filter(value => value === '' && typeof value === 'string').length
+    let times = []
+    times.push(task.start)
+    times.push(task.end)
+    times = times.map(time => time.replace(':',''))
+    if (times[0] > times[1]) return false
     if (task.days.length === 0) ++empty 
     if (empty === 0) return true
     if (empty > 1) return false
@@ -382,6 +387,11 @@ function App() {
     btn.classList.toggle('radio-button__color__active')
   }
 
+  const adjustEndTime = e => {
+    let endTimeInput = document.querySelector('#evEnd')
+    endTimeInput.setAttribute('min', e.target.value)
+  }
+
   return (
     <>
       <div className="App">       
@@ -540,6 +550,7 @@ function App() {
           dayBtnClick={dayBtnClick}
           colorBtnClick={colorBtnClick}
           incomplete={alertAdd}
+          adjustEndTime={adjustEndTime}
         />
       </div>
     </>
