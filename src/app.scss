@@ -669,4 +669,9 @@ h1 {
             font-size: 1vw;
         }
     }
+
+    .new-grid {
+        display: grid;
+        // grid-template-columns: auto;
+    }
 }

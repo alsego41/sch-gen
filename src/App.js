@@ -27,6 +27,7 @@ function App() {
   const [ canEdit, setEdit ] = useState(false)
   const [ canDelete, setDelete ] = useState(false)
   const [ alertAdd, setAlertAdd ] = useState(false)
+  const [ minMaxTimes, setMinMaxTimes ] = useState(['00:00','23:55'])
 
   const version = '1.0'
 
@@ -314,6 +315,7 @@ function App() {
     }
     sortByTime(obj)
     setSchedule(obj)
+    getMinMaxSchTime()
   }, [update])
 
   // Click on highlighted events to edit/delete
@@ -390,6 +392,37 @@ function App() {
   const adjustEndTime = e => {
     let endTimeInput = document.querySelector('#evEnd')
     endTimeInput.setAttribute('min', e.target.value)
+  }
+
+  // useEffect(() => {
+    
+    console.log(minMaxTimes);
+  // }, [update])
+
+  // const assignGridTemplate = () => {
+  //   let [ start, end ] = minMaxTimes
+  //   console.log(start, end);
+  //   let schWrapper = document.querySelector('#days-wrapper')
+  //   schWrapper.classList.add('new-grid')
+  //   schWrapper.style.gridTemplateRows = `repeat(${Math.ceil((end - start) / 100)}, 50px)`
+  // }
+  // assignGridTemplate()
+
+  const getMinMaxSchTime = () => {
+    let startTimes = []
+    let endTimes = []
+    for (let i = 0; i < localStorage.length; i++){
+      let key = JSON.parse(localStorage.getItem(localStorage.key(i)))
+      startTimes.push(key.start)
+      endTimes.push(key.end)
+    }
+    startTimes = startTimes.map(time => {
+      return time.replace(':','')
+    })
+    endTimes = endTimes.map(time => {
+      return time.replace(':','')
+    })
+    setMinMaxTimes([Math.min(...startTimes), Math.max(...endTimes)])
   }
 
   return (
