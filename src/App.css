@@ -518,6 +518,7 @@ h1 {
   }
 
   #days-wrapper {
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     width: 85vw;
@@ -639,6 +640,16 @@ h1 {
 
   .new-grid {
     display: grid;
+  }
+  .new-grid #sch-hours {
+    display: block;
+  }
+  .new-grid #sch-hours p.hours {
+    grid-column: 1/2;
+    align-self: center;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
   }
 }
 

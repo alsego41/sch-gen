@@ -27,7 +27,7 @@ function App() {
   const [ canEdit, setEdit ] = useState(false)
   const [ canDelete, setDelete ] = useState(false)
   const [ alertAdd, setAlertAdd ] = useState(false)
-  const [ minMaxTimes, setMinMaxTimes ] = useState(['00:00','23:55'])
+  const [ minMaxTimes, setMinMaxTimes ] = useState(['00:00','23:55',0])
 
   const version = '1.0'
 
@@ -394,18 +394,22 @@ function App() {
     endTimeInput.setAttribute('min', e.target.value)
   }
 
-  // useEffect(() => {
-    
-    console.log(minMaxTimes);
-  // }, [update])
+  useEffect(() => {
+    assignGridTemplate(minMaxTimes)
+    // console.log(minMaxTimes);
+  }, [minMaxTimes])
 
-  // const assignGridTemplate = () => {
-  //   let [ start, end ] = minMaxTimes
-  //   console.log(start, end);
-  //   let schWrapper = document.querySelector('#days-wrapper')
-  //   schWrapper.classList.add('new-grid')
-  //   schWrapper.style.gridTemplateRows = `repeat(${Math.ceil((end - start) / 100)}, 50px)`
-  // }
+  const assignGridTemplate = (times) => {
+    let [ start, end, count ] = times
+    console.log(start, end);
+    // start = Math.floor(Math.min(...startTimes) / 100)
+    // end = Math.ceil(Math.max(...endTimes) / 100)
+    let schWrapper = document.querySelector('#days-wrapper')
+    schWrapper.classList.add('new-grid')
+    schWrapper.style.gridTemplateRows = `repeat(${count}, 50px)`
+    // let schHours = document.querySelector('#sch-hours')
+
+  }
   // assignGridTemplate()
 
   const getMinMaxSchTime = () => {
@@ -422,7 +426,9 @@ function App() {
     endTimes = endTimes.map(time => {
       return time.replace(':','')
     })
-    setMinMaxTimes([Math.min(...startTimes), Math.max(...endTimes)])
+    let start = Math.floor(Math.min(...startTimes) / 100)
+    let end = Math.ceil(Math.max(...endTimes) / 100)
+    setMinMaxTimes([start, end, end - start])
   }
 
   return (
@@ -439,6 +445,13 @@ function App() {
         <div id='days-wrapper'>
           <div className='days' id='sch-hours'>
             <p>Hours</p>
+            {[...Array(minMaxTimes[2] + 1).keys()].map((i) => {
+              return (
+                <p className='hours' key={`hour-${i}`}>
+                  {minMaxTimes[0] + i}
+                </p>
+              )
+            })}
           </div>
           <div id='mon' className='days'>
             <p>Monday</p>
