@@ -396,6 +396,7 @@ function App() {
 
   useEffect(() => {
     assignGridTemplate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minMaxTimes])
 
   const assignGridTemplate = () => {
