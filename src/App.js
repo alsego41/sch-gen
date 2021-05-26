@@ -27,6 +27,7 @@ function App() {
   const [ canEdit, setEdit ] = useState(false)
   const [ canDelete, setDelete ] = useState(false)
   const [ alertAdd, setAlertAdd ] = useState(false)
+  const [ minMaxTimes, setMinMaxTimes ] = useState(['00:00','23:55',0])
 
   const version = '1.0'
 
@@ -314,6 +315,7 @@ function App() {
     }
     sortByTime(obj)
     setSchedule(obj)
+    getMinMaxSchTime()
   }, [update])
 
   // Click on highlighted events to edit/delete
@@ -392,6 +394,93 @@ function App() {
     endTimeInput.setAttribute('min', e.target.value)
   }
 
+  useEffect(() => {
+    assignGridTemplate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [minMaxTimes])
+
+  const assignGridTemplate = () => {
+    let count = minMaxTimes[2]
+    let schContainer = document.querySelectorAll('.subj-container')
+    let schWrapper = document.querySelectorAll('.subj-wrapper')
+    let medQuery = window.matchMedia('(max-width: 1365px)')
+
+    if (!medQuery.matches){
+      schContainer.forEach(sch => {
+        sch.classList.add('new-grid')
+        sch.style.gridTemplateRows = `repeat(${count}, 75px)`
+      })
+      placeGridItems()
+    }
+
+    medQuery.addEventListener('change', e => {
+      if (e.matches){
+        schContainer.forEach(sch => {
+          sch.removeAttribute('style')
+        })
+        schWrapper.forEach(sch => {
+          sch.style.gridRow = 'auto'
+          sch.style.gridColumn = 'auto'
+        })
+      }
+      if (!e.matches){
+        schContainer.forEach(sch => {
+          sch.classList.add('new-grid')
+          sch.style.gridTemplateRows = `repeat(${count + 1}, 75px)`
+        })
+        placeGridItems()
+      }
+    })
+  }
+
+  const getMinMaxSchTime = () => {
+    if (localStorage.length > 0){
+      let startTimes = []
+      let endTimes = []
+      for (let i = 0; i < localStorage.length; i++){
+        let key = JSON.parse(localStorage.getItem(localStorage.key(i)))
+        startTimes.push(key.start)
+        endTimes.push(key.end)
+      }
+      startTimes = startTimes.map(time => {
+        return time.replace(':','')
+      })
+      endTimes = endTimes.map(time => {
+        return time.replace(':','')
+      })
+      let start = Math.floor(Math.min(...startTimes) / 100)
+      let end = Math.ceil(Math.max(...endTimes) / 100)
+      setMinMaxTimes([start, end, end - start])
+    }
+  }
+
+  const placeGridItems = ( ) => {
+    let min = minMaxTimes[0] - 1
+    let values = Object.values(schedule)
+    values.forEach(day => {
+      if (day.length > 0){
+      day.forEach(event => {
+        let start = convertHourToNumber(event.start, 'floor')
+        let end = convertHourToNumber(event.end, 'ceil')
+        let tasks = document.querySelectorAll(`[data-key=${event.id}]`)
+        tasks.forEach(task => {
+          task.style.gridRow = `${start-min}/${end-min}`
+          task.style.gridColumn = '1/2'
+          if (window.getComputedStyle(task).height === '75px'){
+            task.classList.add('remove-dsc')
+          }
+          if (window.getComputedStyle(task).height !== '75px')
+            task.classList.remove('remove-dsc')
+        })
+      })}
+    })
+  }
+
+  const convertHourToNumber = (hour, roundTo) => {
+    if (roundTo === 'floor') return Math.floor(hour.replace(':','') / 100)
+    if (roundTo === 'ceil') return Math.ceil(hour.replace(':','') / 100)
+  }
+
   return (
     <>
       <div className="App">       
@@ -406,6 +495,13 @@ function App() {
         <div id='days-wrapper'>
           <div className='days' id='sch-hours'>
             <p>Hours</p>
+            {[...Array(minMaxTimes[2]).keys()].map((i) => {
+              return (
+                <p className='hours' key={`hour-${i}`}>
+                  {minMaxTimes[0] + i}
+                </p>
+              )
+            })}
           </div>
           <div id='mon' className='days'>
             <p>Monday</p>
