@@ -74,7 +74,7 @@ h1 {
 
     &.active {
         &.edit{
-            background-color: $blue;
+            background-color: rgb(33, 237, 252);
             cursor: pointer;
             p, .btn-icon {
                 @include textOpac();
@@ -692,10 +692,10 @@ h1 {
         .subj-wrapper {
             box-sizing: border-box;
             z-index: 5;
+            justify-content: normal;
             &:hover {
                 transform: scale(1.01);
                 transition: 0.25s;
-                // cursor: pointer;
                 z-index: 9 !important;
             }
         }

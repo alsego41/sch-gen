@@ -50,7 +50,7 @@ h1 {
   fill: #8C69D2;
 }
 .btn.active.edit {
-  background-color: #2dc3db;
+  background-color: #21edfc;
   cursor: pointer;
 }
 .btn.active.edit p, .btn.active.edit .btn-icon {
@@ -655,6 +655,7 @@ h1 {
   .new-grid .subj-wrapper {
     box-sizing: border-box;
     z-index: 5;
+    justify-content: normal;
   }
   .new-grid .subj-wrapper:hover {
     transform: scale(1.01);
