@@ -395,70 +395,84 @@ function App() {
   }
 
   useEffect(() => {
-    assignGridTemplate(minMaxTimes)
-    placeGridItems()
-    // console.log(minMaxTimes);
+    assignGridTemplate()
   }, [minMaxTimes])
 
-  const assignGridTemplate = (times) => {
-    let [ start, end, count ] = times
-    let schWrapper = document.querySelectorAll('.subj-container')
+  const assignGridTemplate = () => {
+    let count = minMaxTimes[2]
+    let schContainer = document.querySelectorAll('.subj-container')
+    let schWrapper = document.querySelectorAll('.subj-wrapper')
     let medQuery = window.matchMedia('(max-width: 1365px)')
 
     if (!medQuery.matches){
-    schWrapper.forEach(sch => {
-      sch.classList.add('new-grid')
-      sch.style.gridTemplateRows = `repeat(${count + 1}, 50px)`
-    })}
+      schContainer.forEach(sch => {
+        sch.classList.add('new-grid')
+        sch.style.gridTemplateRows = `repeat(${count}, 75px)`
+      })
+      placeGridItems()
+    }
 
     medQuery.addEventListener('change', e => {
       if (e.matches){
-        schWrapper.forEach(sch => {
+        schContainer.forEach(sch => {
           sch.removeAttribute('style')
+        })
+        schWrapper.forEach(sch => {
+          sch.style.gridRow = 'auto'
+          sch.style.gridColumn = 'auto'
         })
       }
       if (!e.matches){
-        schWrapper.forEach(sch => {
+        schContainer.forEach(sch => {
           sch.classList.add('new-grid')
-          sch.style.gridTemplateRows = `repeat(${count + 1}, 50px)`
+          sch.style.gridTemplateRows = `repeat(${count + 1}, 75px)`
         })
+        placeGridItems()
       }
     })
   }
 
   const getMinMaxSchTime = () => {
-    let startTimes = []
-    let endTimes = []
-    for (let i = 0; i < localStorage.length; i++){
-      let key = JSON.parse(localStorage.getItem(localStorage.key(i)))
-      startTimes.push(key.start)
-      endTimes.push(key.end)
+    if (localStorage.length > 0){
+      let startTimes = []
+      let endTimes = []
+      for (let i = 0; i < localStorage.length; i++){
+        let key = JSON.parse(localStorage.getItem(localStorage.key(i)))
+        startTimes.push(key.start)
+        endTimes.push(key.end)
+      }
+      startTimes = startTimes.map(time => {
+        return time.replace(':','')
+      })
+      endTimes = endTimes.map(time => {
+        return time.replace(':','')
+      })
+      let start = Math.floor(Math.min(...startTimes) / 100)
+      let end = Math.ceil(Math.max(...endTimes) / 100)
+      setMinMaxTimes([start, end, end - start])
     }
-    startTimes = startTimes.map(time => {
-      return time.replace(':','')
-    })
-    endTimes = endTimes.map(time => {
-      return time.replace(':','')
-    })
-    let start = Math.floor(Math.min(...startTimes) / 100)
-    let end = Math.ceil(Math.max(...endTimes) / 100)
-    setMinMaxTimes([start, end, end - start])
   }
 
   const placeGridItems = ( ) => {
-    let days = document.querySelectorAll('.subj-container')
     let min = minMaxTimes[0] - 1
-    if (schedule['Monday'].length > 0){
-      let first = schedule['Monday'][0]
-      let start = convertHourToNumber(first.start, 'floor')
-      let end = convertHourToNumber(first.end, 'ceil')
-      let tasks = document.querySelectorAll(`[data-key=${first.id}]`)
-      tasks.forEach(task => {
-        task.style.gridRow = `${start-min}/${end-min}`
-      })
-    }
-    console.log(Object.values(schedule))
-    // if (Object.keys(schedule).forEach)
+    let values = Object.values(schedule)
+    values.forEach(day => {
+      if (day.length > 0){
+      day.forEach(event => {
+        let start = convertHourToNumber(event.start, 'floor')
+        let end = convertHourToNumber(event.end, 'ceil')
+        let tasks = document.querySelectorAll(`[data-key=${event.id}]`)
+        tasks.forEach(task => {
+          task.style.gridRow = `${start-min}/${end-min}`
+          task.style.gridColumn = '1/2'
+          if (window.getComputedStyle(task).height === '75px'){
+            task.classList.add('remove-dsc')
+          }
+          if (window.getComputedStyle(task).height !== '75px')
+            task.classList.remove('remove-dsc')
+        })
+      })}
+    })
   }
 
   const convertHourToNumber = (hour, roundTo) => {
@@ -480,7 +494,7 @@ function App() {
         <div id='days-wrapper'>
           <div className='days' id='sch-hours'>
             <p>Hours</p>
-            {[...Array(minMaxTimes[2] + 1).keys()].map((i) => {
+            {[...Array(minMaxTimes[2]).keys()].map((i) => {
               return (
                 <p className='hours' key={`hour-${i}`}>
                   {minMaxTimes[0] + i}

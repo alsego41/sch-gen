@@ -1,6 +1,6 @@
 const Subject = props => {
     return (
-        <div className='subj-wrapper' data-key={props.name} style={{backgroundColor: props.color}} 
+        <div className='subj-wrapper' data-key={props.name} style={{backgroundColor: props.color}}
         onClick={props.handleEventClick}>
             <p className='subject'>{props.subject}</p>
             <p className='subj-dsc'>{props.subjDsc}</p>
