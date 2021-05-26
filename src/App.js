@@ -396,21 +396,35 @@ function App() {
 
   useEffect(() => {
     assignGridTemplate(minMaxTimes)
+    placeGridItems()
     // console.log(minMaxTimes);
   }, [minMaxTimes])
 
   const assignGridTemplate = (times) => {
     let [ start, end, count ] = times
-    console.log(start, end);
-    // start = Math.floor(Math.min(...startTimes) / 100)
-    // end = Math.ceil(Math.max(...endTimes) / 100)
-    let schWrapper = document.querySelector('#days-wrapper')
-    schWrapper.classList.add('new-grid')
-    schWrapper.style.gridTemplateRows = `repeat(${count}, 50px)`
-    // let schHours = document.querySelector('#sch-hours')
+    let schWrapper = document.querySelectorAll('.subj-container')
+    let medQuery = window.matchMedia('(max-width: 1365px)')
 
+    if (!medQuery.matches){
+    schWrapper.forEach(sch => {
+      sch.classList.add('new-grid')
+      sch.style.gridTemplateRows = `repeat(${count + 1}, 50px)`
+    })}
+
+    medQuery.addEventListener('change', e => {
+      if (e.matches){
+        schWrapper.forEach(sch => {
+          sch.removeAttribute('style')
+        })
+      }
+      if (!e.matches){
+        schWrapper.forEach(sch => {
+          sch.classList.add('new-grid')
+          sch.style.gridTemplateRows = `repeat(${count + 1}, 50px)`
+        })
+      }
+    })
   }
-  // assignGridTemplate()
 
   const getMinMaxSchTime = () => {
     let startTimes = []
@@ -429,6 +443,27 @@ function App() {
     let start = Math.floor(Math.min(...startTimes) / 100)
     let end = Math.ceil(Math.max(...endTimes) / 100)
     setMinMaxTimes([start, end, end - start])
+  }
+
+  const placeGridItems = ( ) => {
+    let days = document.querySelectorAll('.subj-container')
+    let min = minMaxTimes[0] - 1
+    if (schedule['Monday'].length > 0){
+      let first = schedule['Monday'][0]
+      let start = convertHourToNumber(first.start, 'floor')
+      let end = convertHourToNumber(first.end, 'ceil')
+      let tasks = document.querySelectorAll(`[data-key=${first.id}]`)
+      tasks.forEach(task => {
+        task.style.gridRow = `${start-min}/${end-min}`
+      })
+    }
+    console.log(Object.values(schedule))
+    // if (Object.keys(schedule).forEach)
+  }
+
+  const convertHourToNumber = (hour, roundTo) => {
+    if (roundTo === 'floor') return Math.floor(hour.replace(':','') / 100)
+    if (roundTo === 'ceil') return Math.ceil(hour.replace(':','') / 100)
   }
 
   return (

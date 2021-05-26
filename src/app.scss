@@ -528,9 +528,7 @@ h1 {
 }
 
 @media screen and (min-width: 1366px) {
-    #sch-hours {
-        display: flex;
-    }
+    
     h1 {
         width: 85vw;
         font-size: 3.5vw;
@@ -567,7 +565,7 @@ h1 {
     .days {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        // align-items: center;
         border: 0.5px solid $clear-color;
         border-top: 0;
         border-bottom: 0;
@@ -580,6 +578,7 @@ h1 {
         margin: 0;
         color: $clear-color;
     }
+
     .subj-container {
         display: grid;
         grid-template-columns:1fr;
@@ -671,22 +670,29 @@ h1 {
         }
     }
 
+    #sch-hours {
+        display: flex;
+        gap: 0.3vw;
+        .hours {
+            display: grid;
+            height: 50px;
+            padding: 0;
+            align-items: center;
+        }
+    }
+
     .new-grid {
         display: grid;
-        
-        #sch-hours {
-            display: block;
-            p {
-                &.hours {
-                    grid-column: 1/2;
-                    align-self: center;
-                    justify-self: center;
-                    justify-content: center;
-                    align-items: center;
-                    
-                }
-            }
+        margin-top: 0.3vw;
+
+        .subj-container {
+            grid-row: 2/3;
         }
-        // grid-template-columns: auto;
+        .subj-wrapper {
+            z-index: 5;
+        }
+        .subj-dsc {
+            display: none;
+        }
     }
 }
