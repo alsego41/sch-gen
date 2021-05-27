@@ -493,16 +493,32 @@ h1 {
 }
 @media screen and (min-width: 1366px) {
   .download-btn {
-    margin: 2vw auto !important;
-    display: block;
-    width: 200px;
+    margin: 1vw auto !important;
+    display: flex;
+    flex-direction: row;
+    width: 17vw;
   }
   .download-btn p {
-    display: block;
+    display: inline-block;
     width: 100%;
     text-align: center;
     padding: 0;
     margin: 0;
+    font-weight: 800;
+  }
+  .download-btn p:hover {
+    color: black;
+    opacity: 0.7;
+  }
+  .download-btn .btn-icon {
+    margin-right: 1.5vw;
+  }
+  .download-btn:hover {
+    background-color: #ffb835;
+  }
+  .download-btn:hover p {
+    color: black;
+    opacity: 0.7;
   }
 
   h1 {

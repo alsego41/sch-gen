@@ -525,10 +525,9 @@ function App() {
         <h1>Schedule Generator</h1>
         <div id='btn-wrapper'>
           <Button handleClick={handleClick} text='Add task' id='add-btn' 
-            type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' 
-          />
-          <Button handleClick={handleClick} text='Edit task' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
-          <Button handleClick={handleClick} text='Delete task' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
+            type='btn add' imgAlt='Add' />
+          <Button handleClick={handleClick} text='Edit task' id='edit-btn' type='btn edit' imgAlt='Edit' />
+          <Button handleClick={handleClick} text='Delete task' id='del-btn' type='btn del' imgAlt='Delete' />
         </div>
         <div id='days-wrapper'>
           <div className='days' id='sch-hours'>
@@ -669,12 +668,13 @@ function App() {
           </div>
         </div>
         <div className='download-btn btn' onClick={exportSchedule}>
-          <p>Download</p>
+          <p>Download PDF</p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill btn-icon" viewBox="0 0 16 16">
+            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z"/>
+          </svg>
         </div>
       </div>
-      <div 
-        id='modal-wrapper' 
-        className={modalConfig.wrapperClasses}>
+      <div id='modal-wrapper' className={modalConfig.wrapperClasses}>
         <Modal 
           modalType={modalConfig.title} 
           modalClass={modalConfig.modalClasses} 
