@@ -361,6 +361,10 @@ h1 {
   margin: 0;
 }
 
+.download-btn {
+  display: none;
+}
+
 #evEnd:invalid {
   border-color: #ff5757;
   color: red;
@@ -488,6 +492,35 @@ h1 {
   }
 }
 @media screen and (min-width: 1366px) {
+  .download-btn {
+    margin: 1vw auto !important;
+    display: flex;
+    flex-direction: row;
+    width: 17vw;
+  }
+  .download-btn p {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    font-weight: 800;
+  }
+  .download-btn p:hover {
+    color: black;
+    opacity: 0.7;
+  }
+  .download-btn .btn-icon {
+    margin-right: 1.5vw;
+  }
+  .download-btn:hover {
+    background-color: #ffb835;
+  }
+  .download-btn:hover p {
+    color: black;
+    opacity: 0.7;
+  }
+
   h1 {
     width: 85vw;
     font-size: 3.5vw;
@@ -531,6 +564,12 @@ h1 {
     border: 0.5px solid #8C69D2;
     border-top: 0;
     border-bottom: 0;
+  }
+  .days:first-child {
+    border-left: 0;
+  }
+  .days:last-child {
+    border-right: 0;
   }
 
   .days > p {
@@ -640,7 +679,7 @@ h1 {
   }
   #sch-hours .hours {
     display: grid;
-    height: 75px;
+    height: 80px;
     padding: 0;
     align-items: center;
   }
@@ -664,6 +703,11 @@ h1 {
   }
   .new-grid .remove-dsc .subj-dsc {
     display: none;
+  }
+
+  .toPrint {
+    border: 1px solid black;
+    box-shadow: none;
   }
 }
 

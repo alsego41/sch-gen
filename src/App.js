@@ -3,6 +3,8 @@ import Button from './components/Button'
 import Subject from './components/Subject'
 import Modal from './components/Modal'
 import { useState, useEffect } from 'react'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
 
 function App() {
   const modalObject = {
@@ -30,6 +32,7 @@ function App() {
   const [ minMaxTimes, setMinMaxTimes ] = useState(['00:00','23:55',0])
 
   const version = '1.0'
+  const desktopGridHeight = '80px'
 
   // Handle main button clicks
   const handleClick = e => {
@@ -408,7 +411,7 @@ function App() {
     if (!medQuery.matches){
       schContainer.forEach(sch => {
         sch.classList.add('new-grid')
-        sch.style.gridTemplateRows = `repeat(${count}, 75px)`
+        sch.style.gridTemplateRows = `repeat(${count}, ${desktopGridHeight})`
       })
       placeGridItems()
     }
@@ -426,7 +429,7 @@ function App() {
       if (!e.matches){
         schContainer.forEach(sch => {
           sch.classList.add('new-grid')
-          sch.style.gridTemplateRows = `repeat(${count + 1}, 75px)`
+          sch.style.gridTemplateRows = `repeat(${count + 1}, ${desktopGridHeight})`
         })
         placeGridItems()
       }
@@ -466,10 +469,10 @@ function App() {
         tasks.forEach(task => {
           task.style.gridRow = `${start-min}/${end-min}`
           task.style.gridColumn = '1/2'
-          if (window.getComputedStyle(task).height === '75px'){
+          if (window.getComputedStyle(task).height === desktopGridHeight){
             task.classList.add('remove-dsc')
           }
-          if (window.getComputedStyle(task).height !== '75px')
+          if (window.getComputedStyle(task).height !== desktopGridHeight)
             task.classList.remove('remove-dsc')
         })
       })}
@@ -481,16 +484,50 @@ function App() {
     if (roundTo === 'ceil') return Math.ceil(hour.replace(':','') / 100)
   }
 
+  const exportSchedule = () => {
+    const doc = new jsPDF({
+      orientation: 'l',
+      unit: 'mm',
+      format: 'a4',
+      putOnlyUsedFonts:true,
+      floatPrecision: 'smart'
+    })
+    let expSch = document.querySelector('#days-wrapper')
+    let tasks = document.querySelectorAll('.subj-wrapper')
+    tasks.forEach(task => {
+      task.classList.add('toPrint')
+    })
+    
+    html2canvas(expSch, {
+      scale: 2,
+      scrollY: -window.scrollY, 
+      scrollX: -window.scrollX
+    }).then(canvas => {
+      let width = Math.floor(Number(window.getComputedStyle(expSch).width.slice(0,-2)) * 0.264583)
+      let height = Math.floor(Number(window.getComputedStyle(expSch).height.slice(0,-2)) * 0.264583)
+      const img = canvas.toDataURL('image/JPEG', 1);
+      doc.internal.pageSize.setWidth(width);
+      doc.internal.pageSize.setHeight(height);
+      doc.addImage(img, 'JPEG', -1, 0, width, height, undefined, 'FAST');
+      return doc
+    }
+    ).then((docr) => {
+      docr.save('schedule.pdf');
+      tasks.forEach(task => {
+        task.classList.remove('toPrint')
+      })
+    })
+  }
+
   return (
     <>
       <div className="App">       
         <h1>Schedule Generator</h1>
         <div id='btn-wrapper'>
           <Button handleClick={handleClick} text='Add task' id='add-btn' 
-            type='btn add' imgSrc='./img/plus.svg' imgAlt='Add' 
-          />
-          <Button handleClick={handleClick} text='Edit task' id='edit-btn' type='btn edit' imgSrc='./img/pencil-fill.svg' imgAlt='Edit' />
-          <Button handleClick={handleClick} text='Delete task' id='del-btn' type='btn del' imgSrc='./img/trash-fill.svg' imgAlt='Delete' />
+            type='btn add' imgAlt='Add' />
+          <Button handleClick={handleClick} text='Edit task' id='edit-btn' type='btn edit' imgAlt='Edit' />
+          <Button handleClick={handleClick} text='Delete task' id='del-btn' type='btn del' imgAlt='Delete' />
         </div>
         <div id='days-wrapper'>
           <div className='days' id='sch-hours'>
@@ -630,10 +667,14 @@ function App() {
             </div>
           </div>
         </div>
+        <div className='download-btn btn' onClick={exportSchedule}>
+          <p>Download PDF</p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill btn-icon" viewBox="0 0 16 16">
+            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z"/>
+          </svg>
+        </div>
       </div>
-      <div 
-        id='modal-wrapper' 
-        className={modalConfig.wrapperClasses}>
+      <div id='modal-wrapper' className={modalConfig.wrapperClasses}>
         <Modal 
           modalType={modalConfig.title} 
           modalClass={modalConfig.modalClasses} 

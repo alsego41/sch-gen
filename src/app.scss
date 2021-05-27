@@ -404,6 +404,10 @@ h1 {
     }
 }
 
+.download-btn {
+    display: none;
+}
+
 #evEnd:invalid {
     border-color: $red;
     color: red;
@@ -529,6 +533,33 @@ h1 {
 }
 
 @media screen and (min-width: 1366px) {
+    .download-btn {
+        margin: 1vw auto !important;
+        display: flex;
+        flex-direction: row;
+        width: 17vw;
+        p {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            font-weight: 800;
+        }
+        p:hover {
+            @include textOpac();
+        }
+        .btn-icon {
+            margin-right: 1.5vw;
+        }
+        
+        &:hover {
+            background-color: rgb(255, 184, 53);
+            p {
+                @include textOpac();
+            }
+        }
+    }
     
     h1 {
         width: 85vw;
@@ -570,6 +601,14 @@ h1 {
         border: 0.5px solid $clear-color;
         border-top: 0;
         border-bottom: 0;
+
+        &:first-child {
+            border-left: 0;
+        }
+
+        &:last-child {
+            border-right: 0;
+        }
     }
 
     .days > p {
@@ -676,7 +715,7 @@ h1 {
         gap: 0.3vw;
         .hours {
             display: grid;
-            height: 75px;
+            height: 80px;
             padding: 0;
             align-items: center;
         }
@@ -704,5 +743,10 @@ h1 {
                 display: none;
             }
         }
+    }
+
+    .toPrint {
+        border: 1px solid black;
+        box-shadow: none;
     }
 }
