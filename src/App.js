@@ -3,6 +3,8 @@ import Button from './components/Button'
 import Subject from './components/Subject'
 import Modal from './components/Modal'
 import { useState, useEffect } from 'react'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
 
 function App() {
   const modalObject = {
@@ -481,6 +483,39 @@ function App() {
     if (roundTo === 'ceil') return Math.ceil(hour.replace(':','') / 100)
   }
 
+  const exportSchedule = () => {
+    const doc = new jsPDF({
+      orientation: 'l',
+      unit: 'mm',
+      format: 'a4',
+      putOnlyUsedFonts:true,
+      floatPrecision: 'smart'
+    })
+    let expSch = document.querySelector('#days-wrapper')
+    let tasks = document.querySelectorAll('.subj-wrapper')
+    tasks.forEach(task => {
+      task.classList.add('toPrint')
+    })
+    
+    html2canvas(expSch, {scrollY: -window.scrollY, scrollX: -window.scrollX}).then(canvas => {
+      let width = Math.floor(Number(window.getComputedStyle(expSch).width.slice(0,-2)) * 0.264583)
+      let height = Math.floor(Number(window.getComputedStyle(expSch).height.slice(0,-2)) * 0.264583)
+      const img = canvas.toDataURL('image/JPEG', 1);
+      if (width > 297 || height > 210) {
+        doc.addImage(img, 'JPEG', -1, 0, 297, 210, undefined, 'SLOW');
+      } else {
+        doc.addImage(img, 'JPEG', -1, 0, width, height, undefined, 'SLOW');
+      }
+      return doc
+    }
+    ).then((docr) => {
+      docr.save('schedule.pdf');
+      tasks.forEach(task => {
+        task.classList.remove('toPrint')
+      })
+    })
+  }
+
   return (
     <>
       <div className="App">       
@@ -629,6 +664,9 @@ function App() {
               }
             </div>
           </div>
+        </div>
+        <div className='download-btn btn' onClick={exportSchedule}>
+          <p>Download</p>
         </div>
       </div>
       <div 
