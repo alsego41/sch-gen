@@ -32,7 +32,7 @@ function App() {
   const [ minMaxTimes, setMinMaxTimes ] = useState(['00:00','23:55',0])
 
   const version = '1.0'
-  const desktopGridHeight = '50px'
+  const desktopGridHeight = '80px'
 
   // Handle main button clicks
   const handleClick = e => {
@@ -498,15 +498,17 @@ function App() {
       task.classList.add('toPrint')
     })
     
-    html2canvas(expSch, {scrollY: -window.scrollY, scrollX: -window.scrollX}).then(canvas => {
+    html2canvas(expSch, {
+      scale: 2,
+      scrollY: -window.scrollY, 
+      scrollX: -window.scrollX
+    }).then(canvas => {
       let width = Math.floor(Number(window.getComputedStyle(expSch).width.slice(0,-2)) * 0.264583)
       let height = Math.floor(Number(window.getComputedStyle(expSch).height.slice(0,-2)) * 0.264583)
       const img = canvas.toDataURL('image/JPEG', 1);
-      if (width > 297 || height > 210) {
-        doc.addImage(img, 'JPEG', -1, 0, 297, 210, undefined, 'SLOW');
-      } else {
-        doc.addImage(img, 'JPEG', -1, 0, width, height, undefined, 'SLOW');
-      }
+      doc.internal.pageSize.setWidth(width);
+      doc.internal.pageSize.setHeight(height);
+      doc.addImage(img, 'JPEG', -1, 0, width, height, undefined, 'FAST');
       return doc
     }
     ).then((docr) => {
