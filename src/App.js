@@ -32,6 +32,7 @@ function App() {
   const [ minMaxTimes, setMinMaxTimes ] = useState(['00:00','23:55',0])
 
   const version = '1.0'
+  const desktopGridHeight = '50px'
 
   // Handle main button clicks
   const handleClick = e => {
@@ -410,7 +411,7 @@ function App() {
     if (!medQuery.matches){
       schContainer.forEach(sch => {
         sch.classList.add('new-grid')
-        sch.style.gridTemplateRows = `repeat(${count}, 75px)`
+        sch.style.gridTemplateRows = `repeat(${count}, ${desktopGridHeight})`
       })
       placeGridItems()
     }
@@ -428,7 +429,7 @@ function App() {
       if (!e.matches){
         schContainer.forEach(sch => {
           sch.classList.add('new-grid')
-          sch.style.gridTemplateRows = `repeat(${count + 1}, 75px)`
+          sch.style.gridTemplateRows = `repeat(${count + 1}, ${desktopGridHeight})`
         })
         placeGridItems()
       }
@@ -468,10 +469,10 @@ function App() {
         tasks.forEach(task => {
           task.style.gridRow = `${start-min}/${end-min}`
           task.style.gridColumn = '1/2'
-          if (window.getComputedStyle(task).height === '75px'){
+          if (window.getComputedStyle(task).height === desktopGridHeight){
             task.classList.add('remove-dsc')
           }
-          if (window.getComputedStyle(task).height !== '75px')
+          if (window.getComputedStyle(task).height !== desktopGridHeight)
             task.classList.remove('remove-dsc')
         })
       })}

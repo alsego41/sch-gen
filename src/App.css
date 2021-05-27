@@ -663,7 +663,7 @@ h1 {
   }
   #sch-hours .hours {
     display: grid;
-    height: 75px;
+    height: 50px;
     padding: 0;
     align-items: center;
   }
