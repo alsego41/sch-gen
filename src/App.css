@@ -522,7 +522,7 @@ h1 {
   }
 
   h1 {
-    width: 85vw;
+    width: 75vw;
     font-size: 3.5vw;
   }
 
@@ -531,7 +531,7 @@ h1 {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
     gap: 0.5vw;
-    width: 85vw;
+    width: 75vw;
   }
 
   .btn {
@@ -551,7 +551,7 @@ h1 {
     box-sizing: border-box;
     display: grid;
     grid-template-columns: 0.75fr repeat(7, 1fr);
-    width: 85vw;
+    width: 75vw;
     margin: 0 auto;
     background-color: #4E3A76;
     border-radius: 1.5vw;
@@ -585,7 +585,7 @@ h1 {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(auto, 1fr);
     width: 90%;
-    gap: 0.3vw;
+    gap: 0.025vw;
   }
   .subj-container .subj-wrapper {
     margin: 0;
@@ -607,11 +607,11 @@ h1 {
     font-size: 1.1vw;
   }
   .subj-container .subj-wrapper .subj-dsc {
-    font-size: 0.8vw;
+    font-size: 0.75vw;
   }
   .subj-container .subj-wrapper .time {
     padding-top: 0;
-    font-size: 1vw;
+    font-size: 0.8vw;
     text-align: start;
   }
 
@@ -679,7 +679,7 @@ h1 {
   }
   #sch-hours .hours {
     display: grid;
-    height: 80px;
+    height: 40px;
     padding: 0;
     align-items: center;
   }
@@ -701,8 +701,20 @@ h1 {
     transition: 0.25s;
     z-index: 9 !important;
   }
-  .new-grid .remove-dsc .subj-dsc {
+  .new-grid .remove-extra .subj-dsc {
     display: none;
+  }
+  .new-grid .remove-extra .time {
+    display: none;
+  }
+  .new-grid .remove-extra:hover {
+    height: 140px;
+  }
+  .new-grid .remove-extra:hover .subj-dsc {
+    display: block;
+  }
+  .new-grid .remove-extra:hover .time {
+    display: block;
   }
 
   .toPrint {

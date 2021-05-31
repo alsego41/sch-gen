@@ -3,6 +3,8 @@
 $red: rgb(255, 87, 87);
 $green: rgb(59, 212, 146);
 $blue: rgb(45, 195, 219);
+$gap: 0.3;
+$hour-height: 40;
 
 @mixin boldMS {
     font-weight: 800;
@@ -562,7 +564,7 @@ h1 {
     }
     
     h1 {
-        width: 85vw;
+        width: 75vw;
         font-size: 3.5vw;
     }
     #btn-wrapper {
@@ -570,7 +572,7 @@ h1 {
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: 1fr;
         gap: 0.5vw;
-        width: 85vw;
+        width: 75vw;
     }
     .btn {
         margin: 0;
@@ -588,7 +590,7 @@ h1 {
         box-sizing: border-box;
         display: grid;
         grid-template-columns: .75fr repeat(7, 1fr);
-        width: 85vw;
+        width: 75vw;
         margin: 0 auto;
         background-color: $dark-color;
         border-radius: 1.5vw;
@@ -624,7 +626,7 @@ h1 {
         grid-template-columns:1fr;
         grid-template-rows: repeat(auto, 1fr);
         width: 90%;
-        gap: 0.3vw;
+        gap: #{$gap / 12}vw;
         .subj-wrapper {
             margin: 0;
             padding: 0.15vw 0vw;
@@ -644,11 +646,11 @@ h1 {
                 font-size: 1.1vw;
             }
             .subj-dsc {
-                font-size: 0.8vw;
+                font-size: 0.75vw;
             }
             .time {
                 padding-top: 0;
-                font-size: 1vw;
+                font-size: 0.8vw;
                 text-align: start;
             }
         }
@@ -712,10 +714,10 @@ h1 {
 
     #sch-hours {
         display: flex;
-        gap: 0.3vw;
+        gap: #{$gap}vw;
         .hours {
             display: grid;
-            height: 80px;
+            height: #{$hour-height}px;
             padding: 0;
             align-items: center;
         }
@@ -738,9 +740,22 @@ h1 {
                 z-index: 9 !important;
             }
         }
-        .remove-dsc{
+        .remove-extra{
             .subj-dsc {
                 display: none;
+            }
+            .time {
+                display: none;
+            }
+
+            &:hover {
+                .subj-dsc {
+                    display: block;
+                }
+                .time {
+                    display: block;
+                }
+                height: #{$hour-height * 3.5}px;
             }
         }
     }

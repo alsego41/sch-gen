@@ -32,7 +32,7 @@ function App() {
   const [ minMaxTimes, setMinMaxTimes ] = useState(['00:00','23:55',0])
 
   const version = '1.0'
-  const desktopGridHeight = '80px'
+  let desktopGridHeight = 40
 
   // Handle main button clicks
   const handleClick = e => {
@@ -404,6 +404,16 @@ function App() {
 
   const assignGridTemplate = () => {
     let count = minMaxTimes[2]
+
+    if (minMaxTimes[2] > 6) desktopGridHeight = 60
+    if (minMaxTimes[2] > 12) desktopGridHeight = 40
+    if (minMaxTimes[2] <= 6) desktopGridHeight = 80
+
+    let hours = document.querySelectorAll('.hours')
+    hours.forEach(hour => {
+      hour.style.height = `${desktopGridHeight}px`
+    })
+
     let schContainer = document.querySelectorAll('.subj-container')
     let schWrapper = document.querySelectorAll('.subj-wrapper')
     let medQuery = window.matchMedia('(max-width: 1365px)')
@@ -411,7 +421,7 @@ function App() {
     if (!medQuery.matches){
       schContainer.forEach(sch => {
         sch.classList.add('new-grid')
-        sch.style.gridTemplateRows = `repeat(${count}, ${desktopGridHeight})`
+        sch.style.gridTemplateRows = `repeat(${count * 12}, ${desktopGridHeight / 12}px)`
       })
       placeGridItems()
     }
@@ -429,7 +439,7 @@ function App() {
       if (!e.matches){
         schContainer.forEach(sch => {
           sch.classList.add('new-grid')
-          sch.style.gridTemplateRows = `repeat(${count + 1}, ${desktopGridHeight})`
+          sch.style.gridTemplateRows = `repeat(${count * 12}, ${desktopGridHeight / 12}px)`
         })
         placeGridItems()
       }
@@ -464,19 +474,49 @@ function App() {
       if (day.length > 0){
       day.forEach(event => {
         let start = convertHourToNumber(event.start, 'floor')
-        let end = convertHourToNumber(event.end, 'ceil')
+        let startNestRow = 0
+        let endNestRow = 0
+        let minStart = getMinutes(event.start)
+        let minEnd = getMinutes(event.end)
+        if (minStart !== 0) {
+          startNestRow = minStart / 5
+        }
+        if (minEnd !== 0){
+          endNestRow = minEnd / 5
+        }
+        let end = convertHourToNumber(event.end, 'floor')
+        let startMainRow = start - min
+        let endMainRow = end - min
         let tasks = document.querySelectorAll(`[data-key=${event.id}]`)
         tasks.forEach(task => {
-          task.style.gridRow = `${start-min}/${end-min}`
-          task.style.gridColumn = '1/2'
-          if (window.getComputedStyle(task).height === desktopGridHeight){
-            task.classList.add('remove-dsc')
+          if (startMainRow === 1) {
+            task.style.gridRow = `${startMainRow + startNestRow} / ${((endMainRow - 1) * 12)+ endNestRow}`
           }
-          if (window.getComputedStyle(task).height !== desktopGridHeight)
-            task.classList.remove('remove-dsc')
+          else {
+            task.style.gridRow = `${((startMainRow - 1) * 12) + startNestRow} / ${((endMainRow - 1) * 12)+ endNestRow}`
+          }
+          task.style.gridColumn = '1/2'
+          if (Number((window.getComputedStyle(task).height).slice(0, -2)) <= `${desktopGridHeight}`){
+            task.classList.add('remove-extra')
+          }
+          if (Number((window.getComputedStyle(task).height).slice(0, -2)) > `${desktopGridHeight}`)
+            task.classList.remove('remove-extra')
         })
       })}
     })
+  }
+
+  const getMinutes = (hour) => {
+    hour.replace(':','')
+    if (Number(hour) === 0) return 0
+    hour = Number(hour.substring(3))
+    // console.log(hour);
+    let rest = hour % 5
+    // console.log(hour % 5);
+    if (rest >= 3) hour += (5 - rest)
+    if (rest < 3) hour -= rest
+    // console.log(hour);
+    return hour
   }
 
   const convertHourToNumber = (hour, roundTo) => {
