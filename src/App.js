@@ -32,7 +32,7 @@ function App() {
   const [ minMaxTimes, setMinMaxTimes ] = useState(['00:00','23:55',0])
 
   const version = '1.0'
-  let desktopGridHeight = 40
+  let desktopGridHeight = 80
 
   // Handle main button clicks
   const handleClick = e => {
@@ -405,8 +405,8 @@ function App() {
   const assignGridTemplate = () => {
     let count = minMaxTimes[2]
 
-    if (minMaxTimes[2] > 6) desktopGridHeight = 60
-    if (minMaxTimes[2] > 12) desktopGridHeight = 40
+    if (minMaxTimes[2] > 6) desktopGridHeight = 75
+    if (minMaxTimes[2] >= 12) desktopGridHeight = 70
     if (minMaxTimes[2] <= 6) desktopGridHeight = 80
 
     let hours = document.querySelectorAll('.hours')
